@@ -1,0 +1,19 @@
+# Dependências
+node_modules/
+
+# Arquivos de ambiente
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Diretório de uploads
+src/backend/uploads/*
+!src/backend/uploads/usuarios/.gitkeep
+!src/backend/uploads/pacientes/.gitkeep
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db

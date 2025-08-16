@@ -1,0 +1,51 @@
+<div class="container auth-container">
+  <div class="row">
+    <div class="col s12">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title center-align">PsyControl</span>
+          <h5 class="center-align">Login</h5>
+          
+          <form id="login-form" class="row">
+            <div class="input-field col s12">
+              <i class="material-icons prefix">person</i>
+              <input id="usuario" name="usuario" type="text" class="validate" required>
+              <label for="usuario">Usuário</label>
+            </div>
+            
+            <div class="input-field col s12">
+              <i class="material-icons prefix">lock</i>
+              <input id="senha" name="senha" type="password" class="validate" required>
+              <label for="senha">Senha</label>
+            </div>
+            
+            <div class="col s12 center-align">
+              <button id="login-button" class="btn waves-effect waves-light" type="submit">
+                Entrar
+                <i class="material-icons right">send</i>
+              </button>
+              
+              <div id="login-preloader" class="preloader-wrapper small active" style="display: none; margin-left: 10px;">
+                <div class="spinner-layer spinner-green-only">
+                  <div class="circle-clipper left">
+                    <div class="circle"></div>
+                  </div>
+                  <div class="gap-patch">
+                    <div class="circle"></div>
+                  </div>
+                  <div class="circle-clipper right">
+                    <div class="circle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+        <div class="card-action center-align">
+          <p>Não tem uma conta? <a href="#/registro">Registre-se</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

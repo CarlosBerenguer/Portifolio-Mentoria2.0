@@ -1,0 +1,188 @@
+/* Estilos Globais */
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+
+main {
+  flex: 1 0 auto;
+  transition: padding-left 0.3s ease;
+  padding-left: 250px; /* Espaço para o menu lateral */
+}
+
+/* Quando o menu está recolhido */
+main.menu-collapsed {
+  padding-left: 0;
+}
+
+/* Navbar */
+.brand-logo {
+  margin-left: 15px;
+}
+
+/* Sidebar */
+.sidenav {
+  width: 250px;
+  transition: transform 0.3s ease;
+}
+
+.sidenav.collapsed {
+  transform: translateX(-250px);
+}
+
+.sidenav li > a > i {
+  margin-right: 10px;
+}
+
+/* Botão para expandir/colapsar menu */
+.menu-toggle {
+  position: fixed;
+  left: 250px;
+  top: 72px;
+  z-index: 998;
+  background-color: #26a69a;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: left 0.3s ease;
+}
+
+.menu-toggle.collapsed {
+  left: 10px;
+}
+
+.user-view {
+  padding: 20px 16px;
+  margin-bottom: 0;
+  height: 160px;
+}
+
+.user-view .background {
+  background-color: #26a69a;
+}
+
+.user-view .name {
+  margin-top: 15px;
+}
+
+/* Cards */
+.card-action a {
+  color: #26a69a !important;
+}
+
+/* Forms */
+.input-field .prefix.active {
+  color: #26a69a;
+}
+
+/* Toasts */
+.custom-toast {
+  max-width: 400px;
+  line-height: 1.5;
+  padding: 15px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.custom-toast.red {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Login e Registro */
+.auth-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 20px;
+}
+
+/* Tabelas */
+table.highlight tbody tr:hover {
+  background-color: rgba(38, 166, 154, 0.1);
+}
+
+/* Pacientes */
+.paciente-card {
+  transition: transform 0.3s ease;
+}
+
+.paciente-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.paciente-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 10px auto;
+  display: block;
+}
+
+/* Evoluções */
+.evolucao-card {
+  margin-bottom: 20px;
+}
+
+.evolucao-data {
+  font-size: 0.9rem;
+  color: #757575;
+}
+
+/* Responsividade */
+@media only screen and (max-width: 992px) {
+  .brand-logo {
+    margin-left: 0;
+  }
+}
+
+/* Preloader */
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+/* Toast personalizado */
+.custom-toast {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Botão flutuante */
+.fixed-action-btn {
+  right: 23px;
+  bottom: 23px;
+}
+
+/* Imagem de perfil */
+.profile-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 20px auto;
+  display: block;
+  border: 3px solid #26a69a;
+}
+
+/* Animações */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
