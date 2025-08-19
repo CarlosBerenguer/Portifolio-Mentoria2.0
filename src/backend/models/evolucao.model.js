@@ -4,27 +4,32 @@ class Evolucao {
   constructor(evolucao) {
     this.id = evolucao.id;
     this.paciente_id = evolucao.paciente_id;
-    this.data_sessao = evolucao.data_sessao;
-    this.descricao = evolucao.descricao;
-    this.diagnostico = evolucao.diagnostico;
-    this.conduta = evolucao.conduta;
-    this.criado_em = evolucao.criado_em;
+    this.data_hora = evolucao.data_hora;
+    this.titulo = evolucao.titulo || '';
+    this.observacao = evolucao.observacao;
+    // Manter compatibilidade com campos antigos e frontend
+    this.data_sessao = evolucao.data_hora;
+    this.data_evolucao = evolucao.data_hora; // Para compatibilidade com frontend
+    this.descricao = evolucao.observacao;
+    this.conteudo = evolucao.observacao; // Para compatibilidade com frontend
+    this.diagnostico = evolucao.diagnostico || '';
+    this.conduta = evolucao.conduta || '';
+    this.criado_em = evolucao.data_hora;
   }
 
   // Criar uma nova evolução
   static async criar(novaEvolucao) {
     const query = `
       INSERT INTO evolucoes 
-      (paciente_id, data_sessao, descricao, diagnostico, conduta) 
-      VALUES (?, ?, ?, ?, ?)
+      (paciente_id, data_hora, titulo, observacao) 
+      VALUES (?, ?, ?, ?)
     `;
 
     const [result] = await pool.execute(query, [
       novaEvolucao.paciente_id,
-      novaEvolucao.data_sessao,
-      novaEvolucao.descricao,
-      novaEvolucao.diagnostico,
-      novaEvolucao.conduta
+      novaEvolucao.data_hora || new Date(),
+      novaEvolucao.titulo || '',
+      novaEvolucao.observacao || novaEvolucao.descricao || ''
     ]);
 
     const id = result.insertId;
@@ -41,7 +46,7 @@ class Evolucao {
   // Listar evoluções de um paciente
   static async listarPorPaciente(pacienteId) {
     const [rows] = await pool.execute(
-      'SELECT * FROM evolucoes WHERE paciente_id = ? ORDER BY data_sessao DESC, id DESC', 
+      'SELECT * FROM evolucoes WHERE paciente_id = ? ORDER BY data_hora DESC, id DESC', 
       [pacienteId]
     );
     return rows.map(row => new Evolucao(row));
@@ -93,11 +98,11 @@ class Evolucao {
   static async listarRecentes(usuarioId, limite = 5) {
     const query = `
       SELECT e.*, p.nome_completo as paciente_nome, p.id as paciente_id,
-             e.data_sessao as data_evolucao
+             e.data_hora as data_evolucao
       FROM evolucoes e
       INNER JOIN pacientes p ON e.paciente_id = p.id
       WHERE p.usuario_id = ?
-      ORDER BY e.data_sessao DESC, e.id DESC
+      ORDER BY e.data_hora DESC, e.id DESC
       LIMIT ?
     `;
     

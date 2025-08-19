@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste URL Nova Evolução</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .log { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .success { background-color: #d4edda; color: #155724; }
+        .error { background-color: #f8d7da; color: #721c24; }
+        .info { background-color: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>Teste URL Nova Evolução</h1>
+    <div id="logs"></div>
+    <button onclick="testarURL()">Testar URL com paciente_id</button>
+    <button onclick="redirecionarParaNovaEvolucao()">Ir para Nova Evolução (ID: 1)</button>
+
+    <script>
+        function log(message, type = 'info') {
+            const logsDiv = document.getElementById('logs');
+            const logDiv = document.createElement('div');
+            logDiv.className = `log ${type}`;
+            logDiv.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            logsDiv.appendChild(logDiv);
+            console.log(message);
+        }
+
+        function testarURL() {
+            // Simular URL com paciente_id
+            const testURL = '#/evolucoes/novo?paciente_id=1';
+            log(`Testando URL: ${testURL}`, 'info');
+            
+            // Simular extração do paciente_id da URL
+            const urlParams = new URLSearchParams(testURL.split('?')[1]);
+            const pacienteId = urlParams.get('paciente_id');
+            
+            if (pacienteId) {
+                log(`✅ paciente_id extraído com sucesso: ${pacienteId}`, 'success');
+                log('A URL está formatada corretamente!', 'success');
+            } else {
+                log('❌ Falha ao extrair paciente_id da URL', 'error');
+            }
+        }
+        
+        function redirecionarParaNovaEvolucao() {
+            log('Redirecionando para Nova Evolução com paciente_id=1...', 'info');
+            window.location.href = '#/evolucoes/novo?paciente_id=1';
+        }
+        
+        // Testar automaticamente ao carregar
+        window.onload = () => {
+            testarURL();
+        };
+    </script>
+</body>
+</html>

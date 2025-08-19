@@ -5,7 +5,7 @@
       <a href="#" data-target="sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
         <li><a href="#/dashboard"><i class="material-icons left">dashboard</i>Dashboard</a></li>
-        <li class="active"><a href="#/pacientes"><i class="material-icons left">people</i>Pacientes</a></li>
+        <li class="active"><a href="#/prontuarios"><i class="material-icons left">people</i>Prontuários</a></li>
         <li><a href="#/perfil"><i class="material-icons left">person</i>Perfil</a></li>
         <li><a href="#" id="logout-btn"><i class="material-icons left">exit_to_app</i>Sair</a></li>
       </ul>
@@ -23,7 +23,7 @@
     </div>
   </li>
   <li><a href="#/dashboard" class="waves-effect"><i class="material-icons">dashboard</i>Dashboard</a></li>
-  <li class="active"><a href="#/pacientes" class="waves-effect"><i class="material-icons">people</i>Pacientes</a></li>
+  <li class="active"><a href="#/prontuarios" class="waves-effect"><i class="material-icons">people</i>Prontuários</a></li>
   <li><div class="divider"></div></li>
   <li><a href="#/perfil" class="waves-effect"><i class="material-icons">person</i>Perfil</a></li>
   <li><a href="#" id="logout-btn" class="waves-effect"><i class="material-icons">exit_to_app</i>Sair</a></li>
@@ -38,7 +38,7 @@
           <div class="nav-wrapper">
             <div class="col s12">
               <a href="#/dashboard" class="breadcrumb">Dashboard</a>
-              <a href="#/pacientes" class="breadcrumb">Pacientes</a>
+              <a href="#/prontuarios" class="breadcrumb">Prontuários</a>
               <a href="#" id="breadcrumb-visualizar" class="breadcrumb">Visualizar Paciente</a>
               <a href="#" class="breadcrumb">Editar Paciente</a>
             </div>
@@ -69,25 +69,27 @@
         <div class="col s12">
           <div class="card">
             <div class="card-content">
-              <span class="card-title">Informações do Paciente</span>
-              
-              <form id="paciente-form" class="row">
-                <input type="hidden" id="paciente_id" name="paciente_id">
-                
-                <div class="col s12 center-align">
-                  <div class="profile-pic-container">
+              <div class="card-title-container">
+                <span class="card-title">Informações do Paciente</span>
+                <div class="profile-pic-container-right">
+                  <div class="profile-pic-wrapper">
                     <img id="preview-foto" src="/images/user-default.png" class="circle responsive-img profile-pic" alt="Foto do Paciente">
-                    <div class="file-field input-field">
-                      <div class="btn teal">
-                        <span><i class="material-icons">photo_camera</i></span>
-                        <input type="file" id="foto_perfil" name="foto_perfil" accept="image/*">
-                      </div>
-                      <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" placeholder="Foto do paciente">
-                      </div>
+                    <div class="profile-pic-text">Foto do Paciente</div>
+                  </div>
+                  <div class="file-field input-field">
+                    <div class="btn teal btn-small">
+                      <span><i class="material-icons">photo_camera</i></span>
+                      <input type="file" id="foto_perfil" name="foto_perfil" accept="image/*">
+                    </div>
+                    <div class="file-path-wrapper">
+                      <input class="file-path validate" type="text" placeholder="Foto do paciente">
                     </div>
                   </div>
                 </div>
+              </div>
+              
+              <form id="paciente-form" class="row">
+                <input type="hidden" id="paciente_id" name="paciente_id">
                 
                 <!-- Dados Pessoais -->
                 <div class="col s12">
@@ -209,173 +211,3 @@
     </div>
   </div>
 </main>
-
-<script>
-  let pacienteId = null;
-  
-  // Inicializar componentes do Materialize
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems);
-    
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems);
-    
-    // Obter ID do paciente da URL
-    const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
-    pacienteId = urlParams.get('id');
-    
-    if (!pacienteId) {
-      M.toast({html: 'ID do paciente não fornecido', classes: 'red'});
-      window.location.hash = '#/pacientes';
-      return;
-    }
-    
-    // Configurar breadcrumb
-    document.getElementById('breadcrumb-visualizar').href = `#/pacientes/visualizar?id=${pacienteId}`;
-    
-    // Configurar botão cancelar
-    document.getElementById('cancelar-edicao').href = `#/pacientes/visualizar?id=${pacienteId}`;
-    
-    // Preview da imagem
-    const inputFoto = document.getElementById('foto_perfil');
-    const previewFoto = document.getElementById('preview-foto');
-    
-    inputFoto.addEventListener('change', function() {
-      if (this.files && this.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          previewFoto.src = e.target.result;
-        };
-        reader.readAsDataURL(this.files[0]);
-      }
-    });
-    
-    // Inicializar formulário
-    const form = document.getElementById('paciente-form');
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      await salvarPaciente();
-    });
-    
-    // Carregar dados do paciente
-    carregarPaciente();
-  });
-  
-  // Função para carregar dados do paciente
-  async function carregarPaciente() {
-    try {
-      // Exibir loading
-      document.getElementById('paciente-loading').style.display = 'block';
-      document.getElementById('paciente-content').style.display = 'none';
-      
-      // Buscar dados do paciente
-      const paciente = await apiRequest(`pacientes/${pacienteId}`);
-      
-      // Preencher formulário
-      document.getElementById('paciente_id').value = paciente.id;
-      document.getElementById('nome_completo').value = paciente.nome_completo;
-      document.getElementById('data_nascimento').value = formatDateForInput(paciente.data_nascimento);
-      document.getElementById('cpf').value = paciente.cpf || '';
-      
-      // Selecionar gênero
-      if (paciente.genero) {
-        const generoSelect = document.getElementById('genero');
-        const generoOption = Array.from(generoSelect.options).find(option => option.value === paciente.genero);
-        if (generoOption) {
-          generoOption.selected = true;
-        }
-        M.FormSelect.init(document.getElementById('genero'));
-      }
-      
-      document.getElementById('telefone').value = paciente.telefone || '';
-      document.getElementById('email').value = paciente.email || '';
-      document.getElementById('endereco').value = paciente.endereco || '';
-      document.getElementById('convenio').value = paciente.convenio || '';
-      document.getElementById('numero_convenio').value = paciente.numero_convenio || '';
-      document.getElementById('observacoes_medicas').value = paciente.observacoes_medicas || '';
-      document.getElementById('observacoes').value = paciente.observacoes || '';
-      
-      // Exibir foto do paciente
-      if (paciente.foto_perfil) {
-        document.getElementById('preview-foto').src = paciente.foto_perfil;
-      }
-      
-      // Atualizar labels para efeito flutuante do Materialize
-      M.updateTextFields();
-      
-      // Inicializar textareas
-      M.textareaAutoResize(document.getElementById('observacoes_medicas'));
-      M.textareaAutoResize(document.getElementById('observacoes'));
-      
-      // Ocultar loading
-      document.getElementById('paciente-loading').style.display = 'none';
-      document.getElementById('paciente-content').style.display = 'block';
-      
-    } catch (error) {
-      console.error('Erro ao carregar paciente:', error);
-      M.toast({html: 'Erro ao carregar dados do paciente', classes: 'red'});
-      document.getElementById('paciente-loading').innerHTML = `
-        <div class="center-align" style="padding: 40px;">
-          <i class="material-icons large red-text">error</i>
-          <p>Erro ao carregar dados do paciente. <a href="#/pacientes">Voltar para lista de pacientes</a></p>
-        </div>
-      `;
-    }
-  }
-  
-  // Função para salvar paciente
-  async function salvarPaciente() {
-    try {
-      const form = document.getElementById('paciente-form');
-      const formData = new FormData(form);
-      const preloader = document.getElementById('form-preloader');
-      
-      // Exibir preloader
-      preloader.style.display = 'inline-block';
-      document.getElementById('salvar-paciente').disabled = true;
-      
-      // Enviar dados para a API
-      const response = await fetch(`/api/pacientes/${pacienteId}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: formData
-      });
-      
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Erro ao atualizar paciente');
-      }
-      
-      // Exibir mensagem de sucesso
-      M.toast({html: 'Paciente atualizado com sucesso!', classes: 'green'});
-      
-      // Redirecionar para a página de visualização do paciente
-      setTimeout(() => {
-        window.location.hash = `#/pacientes/visualizar?id=${pacienteId}`;
-      }, 1000);
-      
-    } catch (error) {
-      console.error('Erro ao atualizar paciente:', error);
-      M.toast({html: error.message || 'Erro ao atualizar paciente', classes: 'red'});
-    } finally {
-      // Ocultar preloader
-      document.getElementById('form-preloader').style.display = 'none';
-      document.getElementById('salvar-paciente').disabled = false;
-    }
-  }
-  
-  // Função para formatar data para input
-  function formatDateForInput(dateString) {
-    if (!dateString) return '';
-    
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    
-    return `${year}-${month}-${day}`;
-  }
-</script>

@@ -6,12 +6,34 @@ class AuthController {
   // Registrar um novo usuário
   static async registrar(req, res) {
     try {
+      console.log('=== DADOS RECEBIDOS NO REGISTRO ===');
+      console.log('Todos os campos do req.body:', JSON.stringify(req.body, null, 2));
+      console.log('Campos recebidos:', Object.keys(req.body));
+      console.log('=====================================');
+      
       const { usuario, senha, nome_completo, cpf, crp, email, data_nascimento } = req.body;
 
       // Validar campos obrigatórios
-      if (!usuario || !senha || !nome_completo || !cpf || !crp || !email) {
+      const camposObrigatorios = {
+        usuario: 'Usuário',
+        senha: 'Senha',
+        nome_completo: 'Nome completo',
+        cpf: 'CPF',
+        crp: 'CRP',
+        email: 'Email'
+      };
+      
+      const camposFaltantes = [];
+      Object.keys(camposObrigatorios).forEach(campo => {
+        if (!req.body[campo] || req.body[campo].trim() === '') {
+          camposFaltantes.push(camposObrigatorios[campo]);
+        }
+      });
+      
+      if (camposFaltantes.length > 0) {
         return res.status(400).json({ 
-          mensagem: 'Todos os campos obrigatórios devem ser preenchidos' 
+          mensagem: `Os seguintes campos são obrigatórios: ${camposFaltantes.join(', ')}`,
+          campos_faltantes: camposFaltantes
         });
       }
       

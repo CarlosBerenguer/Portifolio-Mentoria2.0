@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const EvolucaoController = require('../controllers/evolucao.controller');
 const { verificarToken } = require('../middlewares/auth.middleware');
+const { uploadAnexosEvolucao } = require('../middlewares/upload.middleware');
 
 /**
  * @swagger
@@ -52,7 +53,7 @@ const { verificarToken } = require('../middlewares/auth.middleware');
  *       500:
  *         description: Erro no servidor
  */
-router.post('/', verificarToken, EvolucaoController.criar);
+router.post('/', verificarToken, uploadAnexosEvolucao, EvolucaoController.criar);
 
 /**
  * @swagger
@@ -155,7 +156,7 @@ router.get('/:id', verificarToken, EvolucaoController.obterPorId);
  *       500:
  *         description: Erro no servidor
  */
-router.put('/:id', verificarToken, EvolucaoController.atualizar);
+router.put('/:id', verificarToken, uploadAnexosEvolucao, EvolucaoController.atualizar);
 
 /**
  * @swagger

@@ -103,14 +103,27 @@ async function registro(dados) {
       }
     }
     
+    // Filtrar apenas campos válidos do usuário
+    const camposValidos = ['usuario', 'senha', 'nome_completo', 'cpf', 'crp', 'email', 'telefone', 'data_nascimento', 'especialidade', 'endereco'];
+    const dadosLimpos = {};
+    
+    camposValidos.forEach(campo => {
+      if (dados[campo] !== undefined && dados[campo] !== null) {
+        dadosLimpos[campo] = dados[campo];
+      }
+    });
+    
     // Verificar campos obrigatórios
     const camposObrigatorios = ['usuario', 'senha', 'nome_completo', 'cpf', 'crp', 'email'];
-    const camposFaltantes = camposObrigatorios.filter(campo => !dados[campo]);
+    const camposFaltantes = camposObrigatorios.filter(campo => !dadosLimpos[campo]);
     
     if (camposFaltantes.length > 0) {
       showToast(`Campos obrigatórios faltando: ${camposFaltantes.join(', ')}`, 'red');
       return false;
     }
+    
+    // Usar dados limpos em vez dos dados originais
+    dados = dadosLimpos;
     
     // Remover caracteres especiais do CPF antes de enviar
     if (dados.cpf) {
@@ -119,16 +132,13 @@ async function registro(dados) {
     
     const response = await apiRequest('auth/registrar', 'POST', dados);
     if (response && response.token) {
-      localStorage.setItem('token', response.token);
-      localStorage.setItem('usuario', JSON.stringify(response.usuario));
-      showToast('Registro realizado com sucesso!');
+      // NÃO armazenar token e usuário para evitar login automático
+      showToast('Registro realizado com sucesso! Faça login para acessar o sistema.');
       
-      // Definir uma flag para indicar que acabamos de registrar
-      sessionStorage.setItem('registroRecente', 'true');
-      
+      // Redirecionar para a tela de login
       setTimeout(() => {
-        window.location.hash = '#/dashboard';
-      }, 500);
+        window.location.hash = '#/login';
+      }, 1500);
       return true;
     }
     return false;

@@ -7,22 +7,15 @@
           <h5 class="center-align">Registro</h5>
           
           <form id="registro-form" class="row">
-            <div class="input-field col s12 m6">
+            <!-- Dados Pessoais -->
+            <div class="col s12">
+              <h6 class="grey-text text-darken-2" style="margin-bottom: 20px; margin-top: 10px;">Dados Pessoais</h6>
+            </div>
+            
+            <div class="input-field col s12">
               <i class="material-icons prefix">person</i>
               <input id="nome_completo" name="nome_completo" type="text" class="validate" required>
               <label for="nome_completo">Nome Completo</label>
-            </div>
-            
-            <div class="input-field col s12 m6">
-              <i class="material-icons prefix">account_circle</i>
-              <input id="usuario" name="usuario" type="text" class="validate" required>
-              <label for="usuario">Usuário</label>
-            </div>
-            
-            <div class="input-field col s12 m6">
-              <i class="material-icons prefix">email</i>
-              <input id="email" name="email" type="email" class="validate" required>
-              <label for="email">Email</label>
             </div>
             
             <div class="input-field col s12 m6">
@@ -33,23 +26,50 @@
             </div>
             
             <div class="input-field col s12 m6">
-              <i class="material-icons prefix">phone</i>
-              <input id="telefone" name="telefone" type="text" class="validate" required>
-              <label for="telefone">Telefone</label>
-            </div>
-            
-            <div class="input-field col s12 m6">
               <i class="material-icons prefix">cake</i>
               <input id="data_nascimento" name="data_nascimento" type="text" class="validate" required>
               <label for="data_nascimento">Data de Nascimento</label>
               <span class="helper-text">Formato: DD/MM/AAAA</span>
             </div>
             
-            <div class="input-field col s12 m6">
+            <!-- Dados Profissionais -->
+            <div class="col s12">
+              <h6 class="grey-text text-darken-2" style="margin-bottom: 20px; margin-top: 20px;">Dados Profissionais</h6>
+            </div>
+            
+            <div class="input-field col s12">
               <i class="material-icons prefix">assignment_ind</i>
               <input id="crp" name="crp" type="text" class="validate" pattern="\d{2}/\d{5}" title="Formato: XX/XXXXX" required>
               <label for="crp">CRP (XX/XXXXX)</label>
               <span class="helper-text" data-error="Formato inválido. Use XX/XXXXX">Formato: XX/XXXXX</span>
+            </div>
+            
+            <!-- Dados de Contato -->
+            <div class="col s12">
+              <h6 class="grey-text text-darken-2" style="margin-bottom: 20px; margin-top: 20px;">Dados de Contato</h6>
+            </div>
+            
+            <div class="input-field col s12 m6">
+              <i class="material-icons prefix">email</i>
+              <input id="email" name="email" type="email" class="validate" required>
+              <label for="email">Email</label>
+            </div>
+            
+            <div class="input-field col s12 m6">
+              <i class="material-icons prefix">phone</i>
+              <input id="telefone" name="telefone" type="text" class="validate" required>
+              <label for="telefone">Telefone</label>
+            </div>
+            
+            <!-- Dados de Acesso -->
+            <div class="col s12">
+              <h6 class="grey-text text-darken-2" style="margin-bottom: 20px; margin-top: 20px;">Dados de Acesso</h6>
+            </div>
+            
+            <div class="input-field col s12">
+              <i class="material-icons prefix">account_circle</i>
+              <input id="usuario" name="usuario" type="text" class="validate" required>
+              <label for="usuario">Usuário</label>
             </div>
             
             <div class="input-field col s12 m6">
@@ -65,6 +85,11 @@
             </div>
             
             <div class="col s12 center-align">
+              <button id="test-data-button" class="btn orange waves-effect waves-light" type="button" style="margin-right: 10px;">
+                Testar Dados
+                <i class="material-icons right">bug_report</i>
+              </button>
+              
               <button id="registro-button" class="btn waves-effect waves-light" type="submit">
                 Registrar
                 <i class="material-icons right">send</i>

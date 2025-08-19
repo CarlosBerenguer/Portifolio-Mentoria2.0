@@ -61,7 +61,7 @@ const { uploadFotoPaciente } = require('../middlewares/upload.middleware');
  *       500:
  *         description: Erro no servidor
  */
-router.post('/', verificarToken, PacienteController.criar);
+router.post('/', verificarToken, uploadFotoPaciente, PacienteController.criar);
 
 /**
  * @swagger

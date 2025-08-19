@@ -27,20 +27,22 @@ class Paciente {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
-    const [result] = await pool.execute(query, [
+    const params = [
       novoPaciente.nome_completo,
       novoPaciente.data_nascimento,
-      novoPaciente.cpf,
-      novoPaciente.genero,
-      novoPaciente.estado_civil,
-      novoPaciente.profissao,
-      novoPaciente.telefone,
-      novoPaciente.email,
-      novoPaciente.endereco,
-      novoPaciente.foto,
-      novoPaciente.observacoes,
+      novoPaciente.cpf || null,
+      novoPaciente.genero || null,
+      novoPaciente.estado_civil || null,
+      novoPaciente.profissao || null,
+      novoPaciente.telefone || null,
+      novoPaciente.email || null,
+      novoPaciente.endereco || null,
+      novoPaciente.foto || null,
+      novoPaciente.observacoes || null,
       novoPaciente.usuario_id
-    ]);
+    ];
+
+    const [result] = await pool.execute(query, params);
 
     const id = result.insertId;
     return { id, ...novoPaciente };

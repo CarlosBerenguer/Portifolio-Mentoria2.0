@@ -8,61 +8,188 @@ body {
 
 main {
   flex: 1 0 auto;
-  transition: padding-left 0.3s ease;
-  padding-left: 250px; /* Espaço para o menu lateral */
+  transition: margin-left 0.3s ease;
+  margin-left: 250px; /* Espaço para o menu lateral */
 }
 
 /* Quando o menu está recolhido */
 main.menu-collapsed {
-  padding-left: 0;
+  margin-left: 0;
 }
 
 /* Navbar */
 .brand-logo {
-  margin-left: 15px;
+  position: absolute !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  margin-left: 0 !important;
 }
 
-/* Sidebar */
-.sidenav {
-  width: 250px;
-  transition: transform 0.3s ease;
+/* Sidebar - Sobrescrever estilos do Materialize */
+.sidenav,
+.sidenav.sidenav-fixed {
+  width: 250px !important;
+  transition: transform 0.3s ease !important;
+  position: fixed !important;
+  left: 0 !important;
+  top: 0 !important;
+  height: 100vh !important;
+  z-index: 997 !important;
+  transform: translateX(0) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
 }
 
-.sidenav.collapsed {
-  transform: translateX(-250px);
+.sidenav.collapsed,
+.sidenav.sidenav-fixed.collapsed {
+  transform: translateX(-250px) !important;
 }
 
 .sidenav li > a > i {
   margin-right: 10px;
 }
 
-/* Botão para expandir/colapsar menu */
-.menu-toggle {
-  position: fixed;
-  left: 250px;
-  top: 72px;
-  z-index: 998;
-  background-color: #26a69a;
-  color: white;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  transition: left 0.3s ease;
+/* Estilos para Lista de Pacientes */
+.paciente-item {
+  transition: all 0.3s ease !important;
+  cursor: pointer !important;
+  border-radius: 8px !important;
+  margin-bottom: 8px !important;
 }
 
-.menu-toggle.collapsed {
-  left: 10px;
+.paciente-item:hover {
+  background-color: #f8f9fa !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+  transform: translateY(-2px) !important;
+}
+
+.paciente-item .circle {
+  border: 3px solid #fff !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+}
+
+.paciente-item .title {
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+}
+
+.paciente-item .btn {
+  border-radius: 20px !important;
+  font-size: 0.85rem !important;
+  padding: 0 16px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+}
+
+.paciente-item .btn-floating {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.paciente-item .btn-floating i {
+  line-height: 40px !important;
+}
+
+/* Responsividade para lista de pacientes */
+@media only screen and (max-width: 992px) {
+  .paciente-item > div > div:first-child {
+    padding-right: 10px !important;
+  }
+  
+  .paciente-item > div > div:last-child {
+    position: static !important;
+    margin-top: 15px !important;
+    flex-direction: row !important;
+    gap: 10px !important;
+  }
+  
+  .paciente-item .btn {
+    min-width: 100px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .paciente-item {
+    padding: 15px !important;
+  }
+  
+  .paciente-item > div {
+    margin-left: 70px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .paciente-item > div > div:first-child {
+    padding-right: 0 !important;
+    width: 100% !important;
+  }
+  
+  .paciente-item > div > div:last-child {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+  
+  .paciente-item .circle {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .paciente-item .btn {
+    min-width: 90px !important;
+    font-size: 0.75rem !important;
+    padding: 0 12px !important;
+  }
+}
+
+/* Botão de toggle do menu - Sobrescrever Materialize */
+.menu-toggle,
+.menu-toggle.btn,
+.menu-toggle.btn-floating {
+  position: fixed !important;
+  top: 80px !important;
+  left: 20px !important;
+  z-index: 1000 !important;
+  background-color: #26a69a !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 50px !important;
+  height: 50px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+}
+
+.menu-toggle:hover,
+.menu-toggle.btn:hover,
+.menu-toggle.btn-floating:hover {
+  background-color: #00695c !important;
+  transform: scale(1.1) !important;
+}
+
+.menu-toggle.collapsed,
+.menu-toggle.btn.collapsed,
+.menu-toggle.btn-floating.collapsed {
+  left: 2px !important;
+}
+
+.menu-toggle:not(.collapsed),
+.menu-toggle.btn:not(.collapsed),
+.menu-toggle.btn-floating:not(.collapsed) {
+  left: 252px !important;
 }
 
 .user-view {
   padding: 20px 16px;
   margin-bottom: 0;
-  height: 160px;
+  height: 220px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
 }
 
 .user-view .background {
@@ -70,12 +197,40 @@ main.menu-collapsed {
 }
 
 .user-view .name {
-  margin-top: 15px;
+  margin-top: 15px !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+  display: block !important;
+}
+
+.user-view .email {
+  margin-top: 5px !important;
+  font-size: 14px !important;
+  opacity: 0.9 !important;
+  line-height: 1.2 !important;
+  text-align: center !important;
+  display: block !important;
 }
 
 /* Cards */
 .card-action a {
   color: #26a69a !important;
+}
+
+/* Dashboard - Altura consistente dos quadros de estatísticas */
+.dashboard-stats .card {
+  min-height: 120px !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.dashboard-stats .card-content {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
 }
 
 /* Forms */
@@ -112,6 +267,7 @@ table.highlight tbody tr:hover {
 /* Pacientes */
 .paciente-card {
   transition: transform 0.3s ease;
+  cursor: pointer;
 }
 
 .paciente-card:hover {
@@ -175,6 +331,175 @@ table.highlight tbody tr:hover {
   margin: 20px auto;
   display: block;
   border: 3px solid #26a69a;
+}
+
+/* Foto de perfil no formulário de paciente */
+.profile-pic-container {
+  margin: 20px 0;
+}
+
+/* Container do título com foto no canto direito */
+.card-title-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.profile-pic-container-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-pic-container-right .file-field {
+  margin: 0;
+}
+
+.profile-pic-container-right .file-path-wrapper {
+  display: none;
+}
+
+/* Wrapper para foto com texto sobreposto */
+.profile-pic-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-pic-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 8px;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+  pointer-events: none;
+  line-height: 1.1;
+  width: 50px;
+}
+
+.profile-pic {
+  width: 64px !important;
+  height: 64px !important;
+  object-fit: cover;
+  border-radius: 50% !important;
+  margin: 0 auto 20px auto;
+  display: block;
+  border: 3px solid #26a69a;
+  transition: all 0.3s ease;
+}
+
+.profile-pic:hover {
+  transform: scale(1.05);
+  border-color: #00695c;
+}
+
+/* Placeholder para foto do usuário - Sobrescrever Materialize */
+.user-photo-placeholder,
+.user-photo-placeholder.circle {
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 50% !important;
+  background-color: #26a69a !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: white !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+}
+
+/* Dobrar o tamanho dos círculos apenas nos menus laterais */
+.sidenav .user-photo-placeholder,
+.sidenav .user-photo-placeholder.circle {
+  width: 128px !important;
+  height: 128px !important;
+  font-size: 32px !important;
+  line-height: 1.2 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  flex-direction: column !important;
+  margin: 0 auto !important;
+}
+
+.user-photo-placeholder:hover {
+  background-color: #00695c;
+  transform: scale(1.05);
+}
+
+/* Tooltip para o placeholder */
+.user-photo-placeholder::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.user-photo-placeholder:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Card title dentro de card-image - Garantir que fique sempre dentro */
+.card .card-image {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tornar div.card-image circular com metade do tamanho do círculo do menu lateral */
+.card .card-image {
+  width: 64px !important;
+  height: 64px !important;
+  border-radius: 50% !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #f5f5f5 !important;
+  border: 2px solid #26a69a !important;
+}
+
+.card .card-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+}
+
+.card .card-image .card-title {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  margin: 0 !important;
+  padding: 16px !important;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent) !important;
+  color: white !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 /* Animações */

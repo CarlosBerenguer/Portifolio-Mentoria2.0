@@ -281,11 +281,17 @@ function validateForm(formId) {
   const form = document.getElementById(formId);
   if (!form) return false;
   
+  console.log('=== DEBUG validateForm ===');
+  console.log('Form ID:', formId);
+  
   let isValid = true;
   let errorMessages = [];
   const inputs = form.querySelectorAll('input, textarea, select');
   
+  console.log('Inputs para validação:', inputs.length);
+  
   inputs.forEach(input => {
+    console.log(`Validando campo: ${input.name} = "${input.value}" (required: ${input.required})`);
     // Validação de campos obrigatórios
     if (input.required && !input.value.trim()) {
       input.classList.add('invalid');
@@ -334,8 +340,12 @@ function validateForm(formId) {
   
   // Exibir mensagens de erro se houver
   if (errorMessages.length > 0) {
+    console.log('Erros de validação:', errorMessages);
     showToast(errorMessages[0], 'red');
   }
+  
+  console.log('Resultado da validação:', isValid);
+  console.log('=== FIM DEBUG validateForm ===');
   
   return isValid;
 }
@@ -345,14 +355,23 @@ function getFormData(formId) {
   const form = document.getElementById(formId);
   if (!form) return null;
   
+  console.log('=== DEBUG getFormData ===');
+  console.log('Form ID:', formId);
+  
   const formData = {};
   const inputs = form.querySelectorAll('input, textarea, select');
+  
+  console.log('Inputs encontrados:', inputs.length);
   
   inputs.forEach(input => {
     if (input.name) {
       formData[input.name] = input.value;
+      console.log(`Campo: ${input.name} = ${input.value}`);
     }
   });
+  
+  console.log('Dados coletados:', JSON.stringify(formData, null, 2));
+  console.log('=== FIM DEBUG getFormData ===');
   
   return formData;
 }

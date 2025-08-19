@@ -3,6 +3,27 @@ const fs = require('fs');
 const path = require('path');
 
 class UsuarioController {
+  // Obter dados do perfil do usuário logado
+  static async obterPerfil(req, res) {
+    try {
+      const usuario = await Usuario.buscarPorId(req.usuarioId);
+      if (!usuario) {
+        return res.status(404).json({ mensagem: 'Usuário não encontrado' });
+      }
+
+      // Adicionar campo created_at para compatibilidade com o frontend
+      const usuarioComData = {
+        ...usuario,
+        created_at: usuario.criado_em
+      };
+
+      res.status(200).json(usuarioComData);
+    } catch (error) {
+      console.error('Erro ao obter perfil:', error);
+      res.status(500).json({ mensagem: 'Erro ao obter dados do perfil' });
+    }
+  }
+
   // Obter dados do usuário por ID
   static async obterUsuario(req, res) {
     try {
@@ -160,6 +181,43 @@ class UsuarioController {
     } catch (error) {
       console.error('Erro ao atualizar foto:', error);
       res.status(500).json({ mensagem: 'Erro ao atualizar foto do usuário' });
+    }
+  }
+
+  // Obter estatísticas do usuário
+  static async obterEstatisticas(req, res) {
+    try {
+      const usuarioId = req.usuarioId;
+      const pool = require('../config/database');
+
+      // Buscar total de pacientes
+      const [pacientesResult] = await pool.execute(
+        'SELECT COUNT(*) as total FROM pacientes WHERE usuario_id = ?',
+        [usuarioId]
+      );
+
+      // Buscar total de evoluções (JOIN com pacientes para filtrar por usuario_id)
+      const [evolucoesResult] = await pool.execute(
+        'SELECT COUNT(*) as total FROM evolucoes e INNER JOIN pacientes p ON e.paciente_id = p.id WHERE p.usuario_id = ?',
+        [usuarioId]
+      );
+
+      // Buscar evoluções do mês atual (JOIN com pacientes e usando data_hora)
+      const [evolucoesMessResult] = await pool.execute(
+        'SELECT COUNT(*) as total FROM evolucoes e INNER JOIN pacientes p ON e.paciente_id = p.id WHERE p.usuario_id = ? AND MONTH(e.data_hora) = MONTH(CURDATE()) AND YEAR(e.data_hora) = YEAR(CURDATE())',
+        [usuarioId]
+      );
+
+      const estatisticas = {
+        total_pacientes: pacientesResult[0].total,
+        total_evolucoes: evolucoesResult[0].total,
+        evolucoes_mes: evolucoesMessResult[0].total
+      };
+
+      res.status(200).json(estatisticas);
+    } catch (error) {
+      console.error('Erro ao obter estatísticas:', error);
+      res.status(500).json({ mensagem: 'Erro ao obter estatísticas do usuário' });
     }
   }
 }

@@ -7,12 +7,12 @@ const routes = {
   '#/registro': { template: 'registro', auth: false },
   '#/dashboard': { template: 'dashboard', auth: true },
   '#/perfil': { template: 'perfil', auth: true },
-  '#/pacientes': { template: 'pacientes', auth: true },
-  '#/pacientes/novo': { template: 'paciente-form', auth: true },
-  '#/pacientes/editar': { template: 'paciente-form', auth: true },
-  '#/pacientes/visualizar': { template: 'paciente-detalhes', auth: true },
-  '#/evolucoes/novo': { template: 'evolucao-form', auth: true },
-  '#/evolucoes/editar': { template: 'evolucao-form', auth: true }
+  '#/prontuarios': { template: 'pacientes', auth: true },
+  '#/prontuarios/novo': { template: 'paciente-novo', auth: true },
+  '#/prontuarios/editar': { template: 'paciente-editar', auth: true },
+  '#/prontuarios/visualizar': { template: 'paciente-visualizar', auth: true },
+  '#/evolucoes/novo': { template: 'evolucao-nova', auth: true },
+  '#/evolucoes/editar': { template: 'evolucao-editar', auth: true }
 };
 
 // Função para navegar para uma rota
@@ -76,25 +76,30 @@ async function renderPage() {
 function initPageEvents(template) {
   switch (template) {
     case 'dashboard':
-      initDashboard();
+      carregarDadosDashboard();
       break;
     case 'pacientes':
       initPacientes();
       break;
-    case 'paciente-form':
+    case 'paciente-novo':
+    case 'paciente-editar':
       initPacienteForm();
       break;
-    case 'paciente-detalhes':
+    case 'paciente-visualizar':
       initPacienteDetalhes();
       break;
-    case 'evolucao-form':
+    case 'evolucao-nova':
+    case 'evolucao-editar':
       initEvolucaoForm();
       break;
     case 'perfil':
-      initPerfil();
+      initPerfilPage();
       break;
     case 'registro':
       initRegistro();
+      break;
+    case 'evolucao-visualizar':
+      initEvolucaoVisualizacao();
       break;
   }
 }
@@ -112,9 +117,27 @@ function updateSidebar() {
   if (userEmailElement) userEmailElement.textContent = usuario.email || '';
   if (userImageElement) {
     if (usuario.foto_perfil) {
+      // Se há foto, mostrar a imagem normalmente
       userImageElement.src = usuario.foto_perfil;
+      userImageElement.style.display = 'block';
+      // Remover placeholder se existir
+      const placeholder = userImageElement.parentNode.querySelector('.user-photo-placeholder');
+      if (placeholder) {
+        placeholder.remove();
+      }
     } else {
-      userImageElement.src = '/images/user-default.png';
+      // Se não há foto, esconder a imagem e criar placeholder
+      userImageElement.style.display = 'none';
+      
+      // Verificar se já existe um placeholder
+      let placeholder = userImageElement.parentNode.querySelector('.user-photo-placeholder');
+      if (!placeholder) {
+        placeholder = document.createElement('div');
+        placeholder.className = 'user-photo-placeholder circle';
+        placeholder.innerHTML = '<div>Foto</div><div>Logo</div>';
+        placeholder.setAttribute('data-tooltip', 'Local para mostrar Foto do usuário ou Logo da empresa');
+        userImageElement.parentNode.appendChild(placeholder);
+      }
     }
   }
 }
@@ -154,7 +177,6 @@ async function carregarDadosDashboard() {
   try {
     // Inicializar containers com mensagem de carregamento
     const pacientesContainer = document.getElementById('ultimos-pacientes-container');
-    const evolucoesContainer = document.getElementById('ultimas-evolucoes-container');
     
     // Carregar estatísticas
     try {
@@ -174,14 +196,14 @@ async function carregarDadosDashboard() {
     
     // Carregar últimos pacientes
     try {
-      const pacientes = await apiRequest('pacientes?limite=5');
+      const pacientes = await apiRequest('pacientes?limite=3');
       
       if (!pacientes || pacientes.length === 0) {
         pacientesContainer.innerHTML = `
           <div class="center-align" style="padding: 20px;">
             <i class="material-icons medium" style="color: #9e9e9e;">person_off</i>
             <p>Nenhum paciente cadastrado.</p>
-            <a href="#/pacientes/novo" class="btn-small waves-effect waves-light teal">
+            <a href="#/prontuarios/novo" class="btn-small waves-effect waves-light teal">
               <i class="material-icons left">add</i>Cadastrar Paciente
             </a>
           </div>
@@ -196,7 +218,7 @@ async function carregarDadosDashboard() {
               <p>${paciente.telefone || 'Sem telefone'}<br>
                  ${paciente.email || 'Sem email'}
               </p>
-              <a href="#/pacientes/visualizar?id=${paciente.id}" class="secondary-content"><i class="material-icons">visibility</i></a>
+              <a href="#/prontuarios/visualizar?id=${paciente.id}" class="secondary-content"><i class="material-icons">visibility</i></a>
             </li>
           `;
         });
@@ -233,13 +255,13 @@ async function carregarDadosDashboard() {
           `;
           
           try {
-            const pacientes = await apiRequest('pacientes?limite=5');
+            const pacientes = await apiRequest('pacientes?limite=3');
             if (!pacientes || pacientes.length === 0) {
               pacientesContainer.innerHTML = `
                 <div class="center-align" style="padding: 20px;">
                   <i class="material-icons medium" style="color: #9e9e9e;">person_off</i>
                   <p>Nenhum paciente cadastrado.</p>
-                  <a href="#/pacientes/novo" class="btn-small waves-effect waves-light teal">
+                  <a href="#/prontuarios/novo" class="btn-small waves-effect waves-light teal">
                     <i class="material-icons left">add</i>Cadastrar Paciente
                   </a>
                 </div>
@@ -254,7 +276,7 @@ async function carregarDadosDashboard() {
                     <p>${paciente.telefone || 'Sem telefone'}<br>
                        ${paciente.email || 'Sem email'}
                     </p>
-                    <a href="#/pacientes/visualizar?id=${paciente.id}" class="secondary-content"><i class="material-icons">visibility</i></a>
+                    <a href="#/prontuarios/visualizar?id=${paciente.id}" class="secondary-content"><i class="material-icons">visibility</i></a>
                   </li>
                 `;
               });
@@ -276,105 +298,7 @@ async function carregarDadosDashboard() {
         });
       }
     }
-    
-    // Carregar últimas evoluções
-    try {
-      const evolucoes = await apiRequest('evolucoes/recentes');
-      
-      if (!evolucoes || !Array.isArray(evolucoes) || evolucoes.length === 0) {
-        evolucoesContainer.innerHTML = `
-          <div class="center-align" style="padding: 20px;">
-            <i class="material-icons medium" style="color: #9e9e9e;">description_off</i>
-            <p>Nenhuma evolução registrada.</p>
-          </div>
-        `;
-      } else {
-        let html = '<ul class="collection">';
-        evolucoes.forEach(evolucao => {
-          html += `
-            <li class="collection-item">
-              <span class="title"><b>${evolucao.titulo || (evolucao.descricao ? evolucao.descricao.substring(0, 30) + '...' : 'Evolução')}</b></span>
-              <p>
-                Paciente: ${evolucao.paciente_nome}<br>
-                Data: ${formatDate(evolucao.data_evolucao || evolucao.data_sessao)}
-              </p>
-              <a href="#/pacientes/visualizar?id=${evolucao.paciente_id}&evolucao=${evolucao.id}" class="secondary-content"><i class="material-icons">visibility</i></a>
-            </li>
-          `;
-        });
-        html += '</ul>';
-        evolucoesContainer.innerHTML = html;
-      }
-    } catch (err) {
-      console.error('Erro ao carregar últimas evoluções:', err);
-      evolucoesContainer.innerHTML = `
-        <div class="center-align" style="padding: 20px;">
-          <i class="material-icons medium" style="color: #f44336;">error_outline</i>
-          <p>Não foi possível carregar as evoluções.</p>
-          <button class="btn-small waves-effect waves-light teal reload-evolucoes">
-            <i class="material-icons left">refresh</i>Tentar Novamente
-          </button>
-        </div>
-      `;
-      
-      // Adicionar evento para tentar novamente
-      const reloadBtn = evolucoesContainer.querySelector('.reload-evolucoes');
-      if (reloadBtn) {
-        reloadBtn.addEventListener('click', async () => {
-          evolucoesContainer.innerHTML = `
-            <div class="center-align" style="padding: 20px;">
-              <div class="preloader-wrapper small active">
-                <div class="spinner-layer spinner-blue-only">
-                  <div class="circle-clipper left"><div class="circle"></div></div>
-                  <div class="gap-patch"><div class="circle"></div></div>
-                  <div class="circle-clipper right"><div class="circle"></div></div>
-                </div>
-              </div>
-              <p>Carregando evoluções...</p>
-            </div>
-          `;
-          
-          try {
-            const evolucoes = await apiRequest('evolucoes/recentes');
-            if (!evolucoes || evolucoes.length === 0) {
-              evolucoesContainer.innerHTML = `
-                <div class="center-align" style="padding: 20px;">
-                  <i class="material-icons medium" style="color: #9e9e9e;">description_off</i>
-                  <p>Nenhuma evolução registrada.</p>
-                </div>
-              `;
-            } else {
-              let html = '<ul class="collection">';
-              evolucoes.forEach(evolucao => {
-                html += `
-                  <li class="collection-item">
-                    <span class="title"><b>${evolucao.titulo || (evolucao.descricao ? evolucao.descricao.substring(0, 30) + '...' : 'Evolução')}</b></span>
-                    <p>
-                      Paciente: ${evolucao.paciente_nome}<br>
-                      Data: ${formatDate(evolucao.data_evolucao || evolucao.data_sessao)}
-                    </p>
-                    <a href="#/pacientes/visualizar?id=${evolucao.paciente_id}&evolucao=${evolucao.id}" class="secondary-content"><i class="material-icons">visibility</i></a>
-                  </li>
-                `;
-              });
-              html += '</ul>';
-              evolucoesContainer.innerHTML = html;
-            }
-          } catch (error) {
-            console.error('Erro ao recarregar evoluções:', error);
-            evolucoesContainer.innerHTML = `
-              <div class="center-align" style="padding: 20px;">
-                <i class="material-icons medium" style="color: #f44336;">error_outline</i>
-                <p>Não foi possível carregar as evoluções.</p>
-                <button class="btn-small waves-effect waves-light teal reload-evolucoes">
-                  <i class="material-icons left">refresh</i>Tentar Novamente
-                </button>
-              </div>
-            `;
-          }
-        });
-      }
-    }
+
   } catch (error) {
     console.error('Erro ao carregar dados do dashboard:', error);
     showToast('Erro ao carregar dados do dashboard', 'red');
@@ -382,8 +306,17 @@ async function carregarDadosDashboard() {
 }
 
 function initPacientes() {
-  console.log('Pacientes inicializado');
-  // Implementação futura
+  console.log('Inicializando página de pacientes');
+  
+  // Inicializar busca de pacientes
+  initBuscaPacientes();
+  
+  // Carregar pacientes inicialmente
+  try {
+    carregarPacientes();
+  } catch (error) {
+    console.error('Erro ao carregar pacientes:', error);
+  }
 }
 
 function initPacienteForm() {
@@ -392,10 +325,79 @@ function initPacienteForm() {
   // Inicializar máscaras para os campos
   $('#cpf').mask('000.000.000-00');
   $('#telefone').mask('(00) 00000-0000');
+  $('#data_nascimento').mask('00/00/0000');
+  
+  // Personalizar mensagens de validação HTML5 em português
+  const nomeInput = document.getElementById('nome_completo');
+  const dataInput = document.getElementById('data_nascimento');
+  const cpfInput = document.getElementById('cpf');
+  const telefoneInput = document.getElementById('telefone');
+  const emailInput = document.getElementById('email');
+  
+  if (nomeInput) {
+    nomeInput.addEventListener('invalid', function() {
+      if (this.validity.valueMissing) {
+        this.setCustomValidity('Nome completo é obrigatório');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+    nomeInput.addEventListener('input', function() {
+      this.setCustomValidity('');
+    });
+  }
+  
+  if (dataInput) {
+    dataInput.addEventListener('invalid', function() {
+      if (this.validity.valueMissing) {
+        this.setCustomValidity('Data de nascimento é obrigatória');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+    dataInput.addEventListener('input', function() {
+      this.setCustomValidity('');
+    });
+  }
+  
+  if (cpfInput) {
+    cpfInput.addEventListener('invalid', function() {
+      if (this.validity.valueMissing) {
+        this.setCustomValidity('CPF é obrigatório');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+    cpfInput.addEventListener('input', function() {
+      this.setCustomValidity('');
+    });
+  }
+  
+  if (telefoneInput) {
+    telefoneInput.addEventListener('invalid', function() {
+      if (this.validity.valueMissing) {
+        this.setCustomValidity('Telefone é obrigatório');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+    telefoneInput.addEventListener('input', function() {
+      this.setCustomValidity('');
+    });
+  }
   
   // Adicionar validação de email
-  const emailInput = document.getElementById('email');
   if (emailInput) {
+    emailInput.addEventListener('invalid', function() {
+      if (this.validity.typeMismatch) {
+        this.setCustomValidity('Por favor, insira um email válido');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+    emailInput.addEventListener('input', function() {
+      this.setCustomValidity('');
+    });
     emailInput.addEventListener('blur', function() {
       const email = this.value;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -407,11 +409,21 @@ function initPacienteForm() {
       }
     });
   }
+  
+  // Verificar se é edição e carregar dados do paciente
+  const urlParams = getUrlParams();
+  if (urlParams.id) {
+    carregarDadosPaciente(urlParams.id);
+  }
+  
+  // Inicializar formulário de paciente
+  initFormularioPaciente();
 }
 
 function initPacienteDetalhes() {
   console.log('Detalhes do paciente inicializado');
-  // Implementação futura
+  // Inicializar página de detalhes do paciente
+  initDetalhesPaciente();
 }
 
 function initRegistro() {
@@ -458,11 +470,35 @@ function initRegistro() {
       }
     });
   }
+  
+  // Adicionar evento para o botão de teste
+  const testButton = document.getElementById('test-data-button');
+  if (testButton) {
+    testButton.addEventListener('click', function() {
+      console.log('=== TESTE DE DADOS DO FORMULÁRIO ===');
+      const dados = getFormData('registro-form');
+      console.log('Dados coletados:', dados);
+      console.log('Campos encontrados:', Object.keys(dados));
+      console.log('Total de campos:', Object.keys(dados).length);
+      
+      // Mostrar no toast também
+      M.toast({
+        html: `Dados coletados: ${Object.keys(dados).length} campos. Veja o console para detalhes.`,
+        classes: 'orange'
+      });
+    });
+  }
 }
 
 function initEvolucaoForm() {
   console.log('Formulário de evolução inicializado');
-  // Implementação futura
+  
+  // Inicializar componentes do Materialize
+  M.Sidenav.init(document.querySelectorAll('.sidenav'));
+  M.FormSelect.init(document.querySelectorAll('select'));
+  
+  // Inicializar formulário de evolução
+  initFormularioEvolucao();
 }
 
 function initPerfil() {

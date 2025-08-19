@@ -9,9 +9,23 @@ class PacienteController {
       const { nome_completo, data_nascimento, cpf } = req.body;
 
       // Validar campos obrigatórios
-      if (!nome_completo || !data_nascimento || !cpf) {
+      const camposFaltando = [];
+      if (!nome_completo || nome_completo.trim() === '') {
+        camposFaltando.push('Nome completo');
+      }
+      if (!data_nascimento || data_nascimento.trim() === '') {
+        camposFaltando.push('Data de nascimento');
+      }
+      if (!cpf || cpf.trim() === '') {
+        camposFaltando.push('CPF');
+      }
+      
+      if (camposFaltando.length > 0) {
+        const mensagem = camposFaltando.length === 1 
+          ? `O campo ${camposFaltando[0]} é obrigatório`
+          : `Os campos ${camposFaltando.join(', ')} são obrigatórios`;
         return res.status(400).json({ 
-          mensagem: 'Nome completo, data de nascimento e CPF são obrigatórios' 
+          mensagem: mensagem
         });
       }
 
@@ -34,6 +48,7 @@ class PacienteController {
 
       res.status(201).json({
         mensagem: 'Paciente cadastrado com sucesso',
+        id: novoPaciente.id,
         paciente: novoPaciente
       });
     } catch (error) {
@@ -117,6 +132,11 @@ class PacienteController {
       delete dadosAtualizacao.id;
       delete dadosAtualizacao.usuario_id;
       delete dadosAtualizacao.criado_em;
+      
+      // Corrigir formato da data de nascimento se estiver no formato ISO com timestamp
+      if (dadosAtualizacao.data_nascimento && dadosAtualizacao.data_nascimento.includes('T')) {
+        dadosAtualizacao.data_nascimento = dadosAtualizacao.data_nascimento.split('T')[0];
+      }
 
       // Atualizar o paciente
       const pacienteAtualizado = await Paciente.atualizar(id, req.usuarioId, dadosAtualizacao);

@@ -5,7 +5,7 @@
       <a href="#" data-target="sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
         <li><a href="#/dashboard"><i class="material-icons left">dashboard</i>Dashboard</a></li>
-        <li class="active"><a href="#/pacientes"><i class="material-icons left">people</i>Pacientes</a></li>
+        <li class="active"><a href="#/prontuarios"><i class="material-icons left">people</i>Prontuários</a></li>
         <li><a href="#/perfil"><i class="material-icons left">person</i>Perfil</a></li>
         <li><a href="#" id="logout-btn"><i class="material-icons left">exit_to_app</i>Sair</a></li>
       </ul>
@@ -23,7 +23,7 @@
     </div>
   </li>
   <li><a href="#/dashboard" class="waves-effect"><i class="material-icons">dashboard</i>Dashboard</a></li>
-  <li class="active"><a href="#/pacientes" class="waves-effect"><i class="material-icons">people</i>Pacientes</a></li>
+  <li class="active"><a href="#/prontuarios" class="waves-effect"><i class="material-icons">people</i>Prontuários</a></li>
   <li><div class="divider"></div></li>
   <li><a href="#/perfil" class="waves-effect"><i class="material-icons">person</i>Perfil</a></li>
   <li><a href="#" id="logout-btn" class="waves-effect"><i class="material-icons">exit_to_app</i>Sair</a></li>
@@ -33,7 +33,7 @@
   <div class="container">
     <div class="row">
       <div class="col s12">
-        <h4 class="header">Pacientes</h4>
+        <h4 class="header">Prontuários</h4>
       </div>
     </div>
     
@@ -44,11 +44,11 @@
             <div class="row">
               <div class="input-field col s12 m8">
                 <i class="material-icons prefix">search</i>
-                <input id="busca-paciente" type="text" class="validate">
-                <label for="busca-paciente">Buscar paciente</label>
+                <input id="busca-pacientes" type="text" class="validate">
+                <label for="busca-pacientes">Buscar paciente</label>
               </div>
               <div class="col s12 m4 right-align" style="margin-top: 20px;">
-                <a href="#/pacientes/novo" class="btn waves-effect waves-light">
+                <a href="#/prontuarios/novo" class="btn waves-effect waves-light">
                   <i class="material-icons left">person_add</i>Novo Paciente
                 </a>
               </div>
@@ -90,122 +90,7 @@
 </main>
 
 <div class="fixed-action-btn">
-  <a href="#/pacientes/novo" class="btn-floating btn-large teal">
+  <a href="#/prontuarios/novo" class="btn-floating btn-large teal">
     <i class="large material-icons">person_add</i>
   </a>
 </div>
-
-<script>
-  // Inicializar componentes do Materialize
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems);
-    
-    var elems = document.querySelectorAll('.fixed-action-btn');
-    var instances = M.FloatingActionButton.init(elems);
-    
-    // Inicializar busca
-    const buscaInput = document.getElementById('busca-paciente');
-    buscaInput.addEventListener('keyup', function(e) {
-      if (e.key === 'Enter') {
-        carregarPacientes(buscaInput.value);
-      }
-    });
-    
-    // Carregar pacientes iniciais
-    carregarPacientes();
-  });
-  
-  // Função para carregar pacientes
-  async function carregarPacientes(busca = '') {
-    try {
-      const pacientesContainer = document.getElementById('pacientes-container');
-      pacientesContainer.innerHTML = `
-        <div class="center-align" style="padding: 20px;">
-          <div class="preloader-wrapper small active">
-            <div class="spinner-layer spinner-blue-only">
-              <div class="circle-clipper left">
-                <div class="circle"></div>
-              </div>
-              <div class="gap-patch">
-                <div class="circle"></div>
-              </div>
-              <div class="circle-clipper right">
-                <div class="circle"></div>
-              </div>
-            </div>
-          </div>
-          <p>Carregando pacientes...</p>
-        </div>
-      `;
-      
-      // Construir URL com parâmetros de busca
-      let url = 'pacientes';
-      if (busca) {
-        url += `?busca=${encodeURIComponent(busca)}`;
-      }
-      
-      const pacientes = await apiRequest(url);
-      
-      if (pacientes.length === 0) {
-        pacientesContainer.innerHTML = `
-          <div class="center-align" style="padding: 20px;">
-            <i class="material-icons large">sentiment_dissatisfied</i>
-            <p>Nenhum paciente encontrado${busca ? ' para a busca "' + busca + '"' : ''}.</p>
-          </div>
-        `;
-        document.getElementById('paginacao').style.display = 'none';
-        return;
-      }
-      
-      // Renderizar cards de pacientes
-      let html = '<div class="row">';
-      
-      pacientes.forEach(paciente => {
-        html += `
-          <div class="col s12 m6 l4">
-            <div class="card paciente-card hoverable">
-              <div class="card-image">
-                <img src="${paciente.foto_perfil || '/images/user-default.png'}" alt="Foto de ${paciente.nome_completo}">
-                <a href="#/pacientes/visualizar?id=${paciente.id}" class="btn-floating halfway-fab waves-effect waves-light teal">
-                  <i class="material-icons">visibility</i>
-                </a>
-              </div>
-              <div class="card-content">
-                <span class="card-title truncate">${paciente.nome_completo}</span>
-                <p>
-                  <i class="material-icons tiny">phone</i> ${paciente.telefone || 'Não informado'}<br>
-                  <i class="material-icons tiny">email</i> ${paciente.email || 'Não informado'}<br>
-                  <i class="material-icons tiny">event</i> ${formatDate(paciente.data_nascimento) || 'Não informada'}
-                </p>
-              </div>
-              <div class="card-action">
-                <a href="#/pacientes/editar?id=${paciente.id}" class="teal-text">Editar</a>
-                <a href="#/evolucoes/novo?paciente_id=${paciente.id}" class="teal-text">Nova Evolução</a>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-      
-      html += '</div>';
-      pacientesContainer.innerHTML = html;
-      
-      // Exibir paginação se necessário
-      if (pacientes.length > 9) {
-        document.getElementById('paginacao').style.display = 'block';
-      } else {
-        document.getElementById('paginacao').style.display = 'none';
-      }
-      
-    } catch (error) {
-      console.error('Erro ao carregar pacientes:', error);
-      document.getElementById('pacientes-container').innerHTML = `
-        <div class="center-align" style="padding: 20px;">
-          <i class="material-icons large red-text">error</i>
-          <p>Erro ao carregar pacientes. Tente novamente mais tarde.</p>
-        </div>
-      `;
-    }
-  }
-</script>

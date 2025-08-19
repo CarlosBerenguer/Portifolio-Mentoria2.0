@@ -1,0 +1,24 @@
+Bug Encontrado e Mantido para o Projeto
+-----------------------------------
+QA: Carlos Berenguer
+Data: 17/08/2025 as 17:27
+
+Bug 01
+Descrição: Ao Mudar de pagina de Dashboard para Prontuários com o Menu Lateral esquerdo Encolhido, ele reaparece expandido e A seta de encolher/Expandir fica na posição invertida.
+
+1- Quando estou em [Dashboard]
+2- Clico na Seta do Menu para encolhe-lo
+3- Clico no botão [Prontuários]
+4- A tela de prontuários é carregada com o menu expandido e a seta na posição invertida.
+
+Acceptance Criteria: Ao Mudar de pagina de Dashboard para Prontuários com o Menu Lateral esquerdo Encolhido, ele deveria permanecer ENCOLHIDO, e com a seta apontando para a direita próxima à borda esquerda do sistema.
+
+----------------------
+
+Bug 02
+Descrição: Na pagina [Dashboard], ao clicar no link [Ver todas as Evoluções] no quadro [Ultimas Evoluções] o usuário é redirecionado para a página de login.
+1- Quando estou em [Dashboard]
+2- Clico no link [Ver todas as Evoluções] no quadro [Ultimas Evoluções]
+3- O sistema é redirecionado para o login
+
+Acceptance Criteria: Na pagina [Dashboard], ao clicar no link [Ver todas as Evoluções] no quadro [Ultimas Evoluções] o usuário Deveria ser redirecionado para a TELA DE PRONTUÁRIOS.

@@ -66,7 +66,49 @@ const uploadFotoPaciente = multer({
     fileSize: 5 * 1024 * 1024 // 5MB
   },
   fileFilter: fileFilter
-}).single('foto');
+}).single('foto_perfil');
+
+// Configuração de armazenamento para anexos de evoluções
+const evolucaoStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = path.join(__dirname, '../uploads/evolucoes');
+    // Garantir que o diretório existe
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    // Usar timestamp para evitar conflitos de nomes
+    const timestamp = Date.now();
+    const ext = path.extname(file.originalname);
+    cb(null, `evolucao_${timestamp}${ext}`);
+  }
+});
+
+// Filtro mais flexível para anexos de evoluções (imagens e documentos)
+const evolucaoFileFilter = (req, file, cb) => {
+  const allowedTypes = [
+    'image/jpeg', 'image/jpg', 'image/png', 'image/gif',
+    'application/pdf', 'application/msword', 
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'text/plain'
+  ];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Tipo de arquivo não suportado.'), false);
+  }
+};
+
+// Configuração do multer para upload de anexos de evoluções
+const uploadAnexosEvolucao = multer({
+  storage: evolucaoStorage,
+  limits: {
+    fileSize: 10 * 1024 * 1024 // 10MB
+  },
+  fileFilter: evolucaoFileFilter
+}).array('anexos', 5); // Até 5 arquivos
 
 // Middleware para tratar erros de upload
 const handleUploadError = (uploadMiddleware) => {
@@ -90,5 +132,6 @@ const handleUploadError = (uploadMiddleware) => {
 
 module.exports = {
   uploadFotoUsuario: handleUploadError(uploadFotoUsuario),
-  uploadFotoPaciente: handleUploadError(uploadFotoPaciente)
+  uploadFotoPaciente: handleUploadError(uploadFotoPaciente),
+  uploadAnexosEvolucao: handleUploadError(uploadAnexosEvolucao)
 };

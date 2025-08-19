@@ -13,6 +13,44 @@ const { uploadFotoUsuario } = require('../middlewares/upload.middleware');
 
 /**
  * @swagger
+ * /api/usuarios/perfil:
+ *   get:
+ *     summary: Obtém dados do perfil do usuário logado
+ *     tags: [Usuários]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dados do perfil retornados com sucesso
+ *       401:
+ *         description: Não autorizado
+ *       404:
+ *         description: Usuário não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
+router.get('/perfil', verificarToken, UsuarioController.obterPerfil);
+
+/**
+ * @swagger
+ * /api/usuarios/estatisticas:
+ *   get:
+ *     summary: Obtém estatísticas do usuário logado
+ *     tags: [Usuários]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Estatísticas retornadas com sucesso
+ *       401:
+ *         description: Não autorizado
+ *       500:
+ *         description: Erro no servidor
+ */
+router.get('/estatisticas', verificarToken, UsuarioController.obterEstatisticas);
+
+/**
+ * @swagger
  * /api/usuarios/{id}:
  *   get:
  *     summary: Obtém dados de um usuário específico

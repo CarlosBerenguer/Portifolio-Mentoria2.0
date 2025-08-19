@@ -5,7 +5,7 @@
       <a href="#" data-target="sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
         <li><a href="#/dashboard"><i class="material-icons left">dashboard</i>Dashboard</a></li>
-        <li class="active"><a href="#/pacientes"><i class="material-icons left">people</i>Pacientes</a></li>
+        <li class="active"><a href="#/prontuarios"><i class="material-icons left">people</i>Prontuários</a></li>
         <li><a href="#/perfil"><i class="material-icons left">person</i>Perfil</a></li>
         <li><a href="#" id="logout-btn"><i class="material-icons left">exit_to_app</i>Sair</a></li>
       </ul>
@@ -23,7 +23,7 @@
     </div>
   </li>
   <li><a href="#/dashboard" class="waves-effect"><i class="material-icons">dashboard</i>Dashboard</a></li>
-  <li class="active"><a href="#/pacientes" class="waves-effect"><i class="material-icons">people</i>Pacientes</a></li>
+  <li class="active"><a href="#/prontuarios" class="waves-effect"><i class="material-icons">people</i>Prontuários</a></li>
   <li><div class="divider"></div></li>
   <li><a href="#/perfil" class="waves-effect"><i class="material-icons">person</i>Perfil</a></li>
   <li><a href="#" id="logout-btn" class="waves-effect"><i class="material-icons">exit_to_app</i>Sair</a></li>
@@ -38,7 +38,7 @@
           <div class="nav-wrapper">
             <div class="col s12">
               <a href="#/dashboard" class="breadcrumb">Dashboard</a>
-              <a href="#/pacientes" class="breadcrumb">Pacientes</a>
+              <a href="#/prontuarios" class="breadcrumb">Prontuários</a>
               <a href="#" id="breadcrumb-paciente" class="breadcrumb">Paciente</a>
               <a href="#" class="breadcrumb">Nova Evolução</a>
             </div>
@@ -160,174 +160,3 @@
     </div>
   </div>
 </main>
-
-<script>
-  let pacienteId = null;
-  let pacienteData = null;
-  
-  // Inicializar componentes do Materialize
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems);
-    
-    // Obter ID do paciente da URL
-    const urlParams = new URLSearchParams(window.location.hash.split('?')[1]);
-    pacienteId = urlParams.get('paciente_id');
-    
-    if (!pacienteId) {
-      M.toast({html: 'ID do paciente não fornecido', classes: 'red'});
-      window.location.hash = '#/pacientes';
-      return;
-    }
-    
-    // Definir data atual como padrão
-    const hoje = new Date();
-    const dataFormatada = formatDateForInput(hoje);
-    const horaFormatada = formatTimeForInput(hoje);
-    
-    document.getElementById('data_evolucao').value = dataFormatada;
-    document.getElementById('hora_evolucao').value = horaFormatada;
-    
-    // Inicializar formulário
-    const form = document.getElementById('evolucao-form');
-    form.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      await salvarEvolucao();
-    });
-    
-    // Carregar dados do paciente
-    carregarPaciente();
-  });
-  
-  // Função para carregar dados do paciente
-  async function carregarPaciente() {
-    try {
-      // Exibir loading
-      document.getElementById('paciente-loading').style.display = 'block';
-      document.getElementById('evolucao-content').style.display = 'none';
-      
-      // Buscar dados do paciente
-      pacienteData = await apiRequest(`pacientes/${pacienteId}`);
-      
-      // Preencher dados na página
-      document.getElementById('paciente-nome').textContent = pacienteData.nome_completo;
-      document.getElementById('paciente-foto').src = pacienteData.foto_perfil || '/images/user-default.png';
-      
-      // Calcular idade
-      const idade = calcularIdade(pacienteData.data_nascimento);
-      document.getElementById('paciente-idade').textContent = `${idade} anos (${formatDate(pacienteData.data_nascimento)})`;
-      
-      document.getElementById('paciente-telefone').textContent = pacienteData.telefone || 'Não informado';
-      document.getElementById('paciente-email').textContent = pacienteData.email || 'Não informado';
-      
-      // Configurar links
-      document.getElementById('ver-paciente').href = `#/pacientes/visualizar?id=${pacienteId}`;
-      document.getElementById('breadcrumb-paciente').href = `#/pacientes/visualizar?id=${pacienteId}`;
-      document.getElementById('breadcrumb-paciente').textContent = pacienteData.nome_completo;
-      document.getElementById('cancelar-evolucao').href = `#/pacientes/visualizar?id=${pacienteId}`;
-      
-      // Definir ID do paciente no formulário
-      document.getElementById('paciente_id').value = pacienteId;
-      
-      // Ocultar loading
-      document.getElementById('paciente-loading').style.display = 'none';
-      document.getElementById('evolucao-content').style.display = 'block';
-      
-      // Atualizar labels para efeito flutuante do Materialize
-      M.updateTextFields();
-      
-    } catch (error) {
-      console.error('Erro ao carregar paciente:', error);
-      M.toast({html: 'Erro ao carregar dados do paciente', classes: 'red'});
-      document.getElementById('paciente-loading').innerHTML = `
-        <div class="center-align" style="padding: 40px;">
-          <i class="material-icons large red-text">error</i>
-          <p>Erro ao carregar dados do paciente. <a href="#/pacientes">Voltar para lista de pacientes</a></p>
-        </div>
-      `;
-    }
-  }
-  
-  // Função para salvar evolução
-  async function salvarEvolucao() {
-    try {
-      const form = document.getElementById('evolucao-form');
-      const formData = new FormData(form);
-      const preloader = document.getElementById('form-preloader');
-      
-      // Combinar data e hora
-      const data = document.getElementById('data_evolucao').value;
-      const hora = document.getElementById('hora_evolucao').value;
-      formData.set('data_hora', `${data}T${hora}:00`);
-      
-      // Exibir preloader
-      preloader.style.display = 'inline-block';
-      document.getElementById('salvar-evolucao').disabled = true;
-      
-      // Enviar dados para a API
-      const response = await fetch('/api/evolucoes', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: formData
-      });
-      
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Erro ao salvar evolução');
-      }
-      
-      const responseData = await response.json();
-      
-      // Exibir mensagem de sucesso
-      M.toast({html: 'Evolução registrada com sucesso!', classes: 'green'});
-      
-      // Redirecionar para a página de visualização do paciente
-      setTimeout(() => {
-        window.location.hash = `#/pacientes/visualizar?id=${pacienteId}`;
-      }, 1000);
-      
-    } catch (error) {
-      console.error('Erro ao salvar evolução:', error);
-      M.toast({html: error.message || 'Erro ao salvar evolução', classes: 'red'});
-    } finally {
-      // Ocultar preloader
-      document.getElementById('form-preloader').style.display = 'none';
-      document.getElementById('salvar-evolucao').disabled = false;
-    }
-  }
-  
-  // Função para calcular idade
-  function calcularIdade(dataNascimento) {
-    if (!dataNascimento) return 'N/A';
-    
-    const hoje = new Date();
-    const nascimento = new Date(dataNascimento);
-    let idade = hoje.getFullYear() - nascimento.getFullYear();
-    const m = hoje.getMonth() - nascimento.getMonth();
-    
-    if (m < 0 || (m === 0 && hoje.getDate() < nascimento.getDate())) {
-      idade--;
-    }
-    
-    return idade;
-  }
-  
-  // Função para formatar data para input
-  function formatDateForInput(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    
-    return `${year}-${month}-${day}`;
-  }
-  
-  // Função para formatar hora para input
-  function formatTimeForInput(date) {
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    
-    return `${hours}:${minutes}`;
-  }
-</script>

@@ -4,12 +4,22 @@ class EvolucaoController {
   // Adicionar uma nova evolução para um paciente
   static async criar(req, res) {
     try {
-      const { paciente_id, data_sessao, descricao } = req.body;
+      console.log('=== CRIANDO EVOLUÇÃO ===');
+      console.log('req.body:', JSON.stringify(req.body, null, 2));
+      console.log('req.files:', req.files);
+      console.log('req.usuarioId:', req.usuarioId);
+      console.log('========================');
+      
+      const { paciente_id, data_hora, observacao, descricao, titulo } = req.body;
 
       // Validar campos obrigatórios
-      if (!paciente_id || !data_sessao || !descricao) {
+      if (!paciente_id || (!observacao && !descricao)) {
+        console.log('Erro: Campos obrigatórios faltando');
+        console.log('paciente_id:', paciente_id);
+        console.log('observacao:', observacao);
+        console.log('descricao:', descricao);
         return res.status(400).json({ 
-          mensagem: 'ID do paciente, data da sessão e descrição são obrigatórios' 
+          mensagem: 'ID do paciente e observação são obrigatórios' 
         });
       }
 
@@ -25,8 +35,26 @@ class EvolucaoController {
         });
       }
 
+      // Processar anexos se existirem
+      let anexos = [];
+      if (req.files && req.files.length > 0) {
+        anexos = req.files.map(file => ({
+          nome_original: file.originalname,
+          nome_arquivo: file.filename,
+          caminho: file.path,
+          tamanho: file.size,
+          tipo: file.mimetype
+        }));
+      }
+
+      // Preparar dados para criação
+      const dadosEvolucao = {
+        ...req.body,
+        anexos: anexos
+      };
+
       // Criar a evolução
-      const novaEvolucao = await Evolucao.criar(req.body);
+      const novaEvolucao = await Evolucao.criar(dadosEvolucao);
 
       res.status(201).json({
         mensagem: 'Evolução registrada com sucesso',
@@ -58,7 +86,14 @@ class EvolucaoController {
       // Listar evoluções
       const evolucoes = await Evolucao.listarPorPaciente(pacienteId);
 
-      res.status(200).json(evolucoes);
+      // Garantir que os campos de compatibilidade com frontend sejam incluídos
+      const evolucoesFormatadas = evolucoes.map(evolucao => ({
+        ...evolucao,
+        conteudo: evolucao.observacao,
+        data_evolucao: evolucao.data_hora
+      }));
+
+      res.status(200).json(evolucoesFormatadas);
     } catch (error) {
       console.error('Erro ao listar evoluções:', error);
       res.status(500).json({ mensagem: 'Erro ao listar evoluções do paciente' });

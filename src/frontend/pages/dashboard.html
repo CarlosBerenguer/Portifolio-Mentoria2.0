@@ -5,7 +5,7 @@
       <a href="#" data-target="sidenav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul class="right hide-on-med-and-down">
         <li><a href="#/dashboard"><i class="material-icons left">dashboard</i>Dashboard</a></li>
-        <li><a href="#/pacientes"><i class="material-icons left">people</i>Pacientes</a></li>
+        <li><a href="#/prontuarios"><i class="material-icons left">people</i>Prontuários</a></li>
         <li><a href="#/perfil"><i class="material-icons left">person</i>Perfil</a></li>
         <li><a href="#" id="logout-btn"><i class="material-icons left">exit_to_app</i>Sair</a></li>
       </ul>
@@ -23,7 +23,7 @@
     </div>
   </li>
   <li><a href="#/dashboard" class="waves-effect"><i class="material-icons">dashboard</i>Dashboard</a></li>
-  <li><a href="#/pacientes" class="waves-effect"><i class="material-icons">people</i>Pacientes</a></li>
+  <li><a href="#/prontuarios" class="waves-effect"><i class="material-icons">people</i>Prontuários</a></li>
   <li><div class="divider"></div></li>
   <li><a href="#/perfil" class="waves-effect"><i class="material-icons">person</i>Perfil</a></li>
   <li><a href="#" id="logout-btn" class="waves-effect"><i class="material-icons">exit_to_app</i>Sair</a></li>
@@ -37,12 +37,12 @@
       </div>
     </div>
     
-    <div class="row">
+    <div class="row dashboard-stats">
       <!-- Estatísticas Rápidas -->
       <div class="col s12 m6 l3">
         <div class="card teal darken-1">
           <div class="card-content white-text">
-            <span class="card-title">Total de Pacientes</span>
+            <span class="card-title">Total de Prontuários</span>
             <h3 id="total-pacientes">0</h3>
           </div>
         </div>
@@ -69,7 +69,7 @@
       <div class="col s12 m6 l3">
         <div class="card green darken-1">
           <div class="card-content white-text">
-            <span class="card-title">Pacientes Novos</span>
+            <span class="card-title">Prontuários Novos</span>
             <h3 id="pacientes-novos">0</h3>
           </div>
         </div>
@@ -78,11 +78,11 @@
     
     <div class="row">
       <!-- Últimos Pacientes -->
-      <div class="col s12 m6">
-        <div class="card">
+      <div class="col s12">
+        <div class="card dashboard-card">
           <div class="card-content">
-            <span class="card-title">Últimos Pacientes</span>
-            <div id="ultimos-pacientes-container">
+            <span class="card-title">Últimos Prontuários</span>
+            <div id="ultimos-pacientes-container" class="dashboard-content">
               <div class="center-align" style="padding: 20px;">
                 <div class="preloader-wrapper small active">
                   <div class="spinner-layer spinner-blue-only">
@@ -97,39 +97,12 @@
                     </div>
                   </div>
                 </div>
-                <p>Carregando pacientes...</p>
+                <p>Carregando prontuários...</p>
               </div>
             </div>
           </div>
           <div class="card-action">
-            <a href="#/pacientes">Ver todos os pacientes</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Últimas Evoluções -->
-      <div class="col s12 m6">
-        <div class="card">
-          <div class="card-content">
-            <span class="card-title">Últimas Evoluções</span>
-            <div id="ultimas-evolucoes-container">
-              <div class="center-align" style="padding: 20px;">
-                <div class="preloader-wrapper small active">
-                  <div class="spinner-layer spinner-blue-only">
-                    <div class="circle-clipper left">
-                      <div class="circle"></div>
-                    </div>
-                    <div class="gap-patch">
-                      <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                      <div class="circle"></div>
-                    </div>
-                  </div>
-                </div>
-                <p>Carregando evoluções...</p>
-              </div>
-            </div>
+            <a href="#/prontuarios">Ver todos os prontuários</a>
           </div>
         </div>
       </div>
@@ -142,80 +115,43 @@
     <i class="large material-icons">add</i>
   </a>
   <ul>
-    <li><a href="#/pacientes/novo" class="btn-floating blue"><i class="material-icons">person_add</i></a></li>
+    <li><a href="#/prontuarios/novo" class="btn-floating blue"><i class="material-icons">person_add</i></a></li>
     <li><a href="#/evolucoes/novo" class="btn-floating green"><i class="material-icons">note_add</i></a></li>
   </ul>
 </div>
 
-<script>
-  // Inicializar componentes do Materialize
-  document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.sidenav');
-    var instances = M.Sidenav.init(elems);
-    
-    var elems = document.querySelectorAll('.fixed-action-btn');
-    var instances = M.FloatingActionButton.init(elems);
-  });
-  
-  // Função para carregar dados do dashboard
-  async function initDashboard() {
-    try {
-      // Carregar estatísticas
-      const estatisticas = await apiRequest('pacientes/estatisticas');
-      document.getElementById('total-pacientes').textContent = estatisticas.totalPacientes || 0;
-      document.getElementById('evolucoes-mes').textContent = estatisticas.evolucoesMes || 0;
-      document.getElementById('evolucoes-hoje').textContent = estatisticas.evolucoesHoje || 0;
-      document.getElementById('pacientes-novos').textContent = estatisticas.pacientesNovos || 0;
-      
-      // Carregar últimos pacientes
-      const pacientes = await apiRequest('pacientes?limite=5');
-      const pacientesContainer = document.getElementById('ultimos-pacientes-container');
-      
-      if (pacientes.length === 0) {
-        pacientesContainer.innerHTML = '<p class="center-align">Nenhum paciente cadastrado.</p>';
-      } else {
-        let html = '<ul class="collection">';
-        pacientes.forEach(paciente => {
-          html += `
-            <li class="collection-item avatar">
-              <img src="${paciente.foto_perfil || '/images/user-default.png'}" alt="" class="circle">
-              <span class="title">${paciente.nome_completo}</span>
-              <p>${paciente.telefone || 'Sem telefone'}<br>
-                 ${paciente.email || 'Sem email'}
-              </p>
-              <a href="#/pacientes/visualizar?id=${paciente.id}" class="secondary-content"><i class="material-icons">visibility</i></a>
-            </li>
-          `;
-        });
-        html += '</ul>';
-        pacientesContainer.innerHTML = html;
-      }
-      
-      // Carregar últimas evoluções
-      const evolucoes = await apiRequest('evolucoes/recentes');
-      const evolucoesContainer = document.getElementById('ultimas-evolucoes-container');
-      
-      if (evolucoes.length === 0) {
-        evolucoesContainer.innerHTML = '<p class="center-align">Nenhuma evolução registrada.</p>';
-      } else {
-        let html = '<ul class="collection">';
-        evolucoes.forEach(evolucao => {
-          html += `
-            <li class="collection-item">
-              <span class="title"><b>${evolucao.titulo}</b></span>
-              <p>
-                Paciente: ${evolucao.paciente_nome}<br>
-                Data: ${formatDate(evolucao.data_evolucao)}
-              </p>
-              <a href="#/pacientes/visualizar?id=${evolucao.paciente_id}&evolucao=${evolucao.id}" class="secondary-content"><i class="material-icons">visibility</i></a>
-            </li>
-          `;
-        });
-        html += '</ul>';
-        evolucoesContainer.innerHTML = html;
-      }
-    } catch (error) {
-      console.error('Erro ao carregar dashboard:', error);
-    }
+<style>
+  /* Estilos para padronizar altura dos quadros do dashboard */
+  .dashboard-card {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
   }
-</script>
+  
+  .dashboard-card .card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dashboard-content {
+    flex: 1;
+    max-height: 280px;
+  }
+  
+  .dashboard-card .card-action {
+    flex-shrink: 0;
+  }
+  
+  /* Centralizar divs center-align dentro de card-content */
+   .dashboard-content .center-align {
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     height: 100%;
+     min-height: 200px;
+   }
+   
+
+</style>
