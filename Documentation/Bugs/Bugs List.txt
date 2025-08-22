@@ -1,0 +1,38 @@
+QA: Carlos Berenguer
+Date: 17/08/2025 at 17:27
+
+Bug 01
+Description: When switching from the [Dashboard] page to [Medical Records] with the left sidebar menu collapsed, it reappears expanded and the collapse/expand arrow is in the inverted position.
+
+1- When I am on [Dashboard]
+2- I click the menu arrow to collapse it
+3- I click the [Medical Records] button
+4- The Medical Records screen loads with the menu expanded and the arrow in the inverted position.
+
+Acceptance Criteria: When switching from the [Dashboard] page to [Medical Records] with the left sidebar menu collapsed, it should remain COLLAPSED, with the arrow pointing to the right near the left edge of the system.
+
+QA: Carlos Berenguer
+Date: 17/08/2025 at 17:35
+Bug 02
+Description: On the [Dashboard] page, when clicking the [View all Evolutions] link in the [Latest Evolutions] card, the user is redirected to the login page.
+1- When I am on [Dashboard]
+2- I click the [View all Evolutions] link in the [Latest Evolutions] card
+3- The system redirects to the login page
+
+Acceptance Criteria: On the [Dashboard] page, when clicking the [View all Evolutions] link in the [Latest Evolutions] card, the user should be redirected to the MEDICAL RECORDS SCREEN.
+
+QA: Carlos Berenguer
+Date: 22/08/2025 at 20:12
+Bug 03
+Description: On the [Login] page, it is possible to see a button with an arrow. This button refers to the application’s left sidebar menu.
+Acceptance Criteria: When accessing the [Login] page, the user should not see this button.
+
+QA: Carlos Berenguer
+Date: 22/08/2025 at 20:17
+Bug 04
+Description: On the [Patient Details] page, when clicking the view button for any evolution, the system redirects the user to the login page.
+1- When I am on [Patient Details]
+2- I click the view button for any evolution
+3- The system redirects to the login page
+
+Acceptance Criteria: When clicking the view button, the user should be redirected to the evolution details screen.

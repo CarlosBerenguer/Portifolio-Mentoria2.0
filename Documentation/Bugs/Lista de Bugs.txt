@@ -14,7 +14,8 @@ Descrição: Ao Mudar de pagina de Dashboard para Prontuários com o Menu Latera
 Acceptance Criteria: Ao Mudar de pagina de Dashboard para Prontuários com o Menu Lateral esquerdo Encolhido, ele deveria permanecer ENCOLHIDO, e com a seta apontando para a direita próxima à borda esquerda do sistema.
 
 ----------------------
-
+QA: Carlos Berenguer
+Data: 17/08/2025 as 17:35
 Bug 02
 Descrição: Na pagina [Dashboard], ao clicar no link [Ver todas as Evoluções] no quadro [Ultimas Evoluções] o usuário é redirecionado para a página de login.
 1- Quando estou em [Dashboard]
@@ -22,3 +23,21 @@ Descrição: Na pagina [Dashboard], ao clicar no link [Ver todas as Evoluções]
 3- O sistema é redirecionado para o login
 
 Acceptance Criteria: Na pagina [Dashboard], ao clicar no link [Ver todas as Evoluções] no quadro [Ultimas Evoluções] o usuário Deveria ser redirecionado para a TELA DE PRONTUÁRIOS.
+-----------------------
+
+QA: Carlos Berenguer
+Data: 22/08/2025 as 20:12
+Bug 03
+Descrição: Na pagina [Login], é possivel ver um botão com uma seta. Esse botão é referente ao menu lateral esquerdo da aplicação.
+Acceptance Criteria: Ao acessar a pagina de [Login] o usuário não deve ver esse botão.
+
+---------------------------
+QA: Carlos Berenguer
+Data: 22/08/2025 as 20:17
+Bug 04
+Descrição: Na pagina [Detalhes do Paciente], ao clicar no botão de visualização de qualquer evolução, o sistema redireciona o usuário para a pagina de login.
+1- Quando estou em [Detalhes do Paciente]
+2- Clico no botão de visualização de qualquer evolução
+3- O sistema é redirecionado para o login
+
+Acceptance Criteria: Ao clicar no botão de visualização o usuario deveria ser redirecionado para a tela de detalhes da evolução.
