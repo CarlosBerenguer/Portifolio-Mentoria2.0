@@ -22,18 +22,18 @@ export default function () {
     const payload = {
         usuario: 'carlos',
         senha: '123',
-    }   
+    }
     const params = {
         headers: {
             'Content-Type': 'application/json',
-        }      
+        }
     }
-    
+
     const response = http.post(url, JSON.stringify(payload), params)
 
     check(response, {
         'status is 200': (r) => r.status === 200,
-        'token is String': (r) => typeof(r.json().token) === 'string',
+        'token is String': (r) => typeof (r.json().token) === 'string',
     })
     sleep(1)
 }
