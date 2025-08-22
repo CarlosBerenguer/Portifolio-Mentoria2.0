@@ -3,15 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ./test/**/*.api.js --reporter mochawesome --timeout=200000"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "chai": "^6.0.1",
+    "chai": "^4.5.0",
     "mocha": "^11.7.1",
+    "mochawesome": "^7.1.3",
     "supertest": "^7.1.4"
   }
 }
