@@ -1,0 +1,7 @@
+ID: US014
+Title: Session Note Creation
+Description: As a psychologist, I want to record session notes for a patient.
+Acceptance Criteria:
+- A textarea must be available for observations.
+- Date and time must be saved automatically.
+- The note must appear at the top of the list.

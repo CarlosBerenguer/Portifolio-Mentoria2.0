@@ -1,0 +1,31 @@
+EPIC 5 — Dashboard e Navegação
+
+US5.1 — Acesso ao dashboard
+Como usuário autenticado, quero acessar uma tela inicial com meus dados.
+Critérios de Aceite:
+- Após login, redirecionar para Dashboard.
+- Mostrar nome, CRP, especialidade e foto no cabeçalho.
+- Exibir botões principais.
+Prioridade: Alta
+
+US5.2 — Menu de perfil
+Como psicólogo logado, quero acessar opções de perfil e logout.
+Critérios de Aceite:
+- Menu deve conter opções: 'Informações do Perfil' e 'Sair'.
+- Deve abrir ao clicar na foto.
+Prioridade: Média
+
+US5.3 — Acesso ao prontuário
+Como psicólogo, quero acessar a tela de prontuário a partir do dashboard.
+Critérios de Aceite:
+- Botão 'Prontuário' deve direcionar para lista de pacientes.
+- Deve estar sempre habilitado.
+Prioridade: Alta
+
+US5.4 — Placeholders de funcionalidades futuras
+Como psicólogo, quero visualizar botões de funcionalidades futuras.
+Critérios de Aceite:
+- Botões 'Agendamentos' e 'Financeiro' devem aparecer desativados.
+- Ao passar o mouse, mostrar tooltip 'Em breve'.
+Prioridade: Baixa
+

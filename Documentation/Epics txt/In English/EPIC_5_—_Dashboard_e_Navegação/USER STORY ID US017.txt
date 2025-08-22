@@ -1,0 +1,7 @@
+ID: US017
+Title: Dashboard Access
+Description: As a logged-in user, I want to access the dashboard after login.
+Acceptance Criteria:
+- After login, redirect to the Dashboard.
+- Display name, CRP, specialty, and photo in the header.
+- Show main action buttons.

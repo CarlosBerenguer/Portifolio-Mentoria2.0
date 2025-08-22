@@ -1,0 +1,12 @@
+TEST CASE ( Based On ISO-29119-3 )
+
+ID: 008
+Title: Access Profile page
+Priority: 1
+Traceability: User Story 006
+
+Pre Conditions: To be Logged in
+
+Steps:
+1 - ON Dashboard page, Click on [Perfil] - Expected: Profile page is displayed
+2 - Make Sure all the data displayed reflects the data registered in the user creation

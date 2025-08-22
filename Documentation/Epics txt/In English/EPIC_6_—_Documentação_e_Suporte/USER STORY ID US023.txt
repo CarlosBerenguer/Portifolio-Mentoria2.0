@@ -1,0 +1,6 @@
+ID: US023
+Title: Installation Guide
+Description: As a developer, I want a guide for installing the system.
+Acceptance Criteria:
+- The document must include requirements, dependencies, and commands.
+- It must explain how to configure the database and run the server.

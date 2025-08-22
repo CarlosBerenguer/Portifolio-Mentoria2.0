@@ -1,0 +1,8 @@
+ID: US008
+Title: Patient Registration
+Description: As a psychologist, I want to register a patient with all required information.
+Acceptance Criteria:
+- The registration must include all required fields.
+- CPF (if provided) must not be duplicated.
+- The photo must be optional.
+- Return a success message.

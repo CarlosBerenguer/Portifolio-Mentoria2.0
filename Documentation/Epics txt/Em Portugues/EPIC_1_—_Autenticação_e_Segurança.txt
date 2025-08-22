@@ -1,0 +1,25 @@
+EPIC 1 — Autenticação e Segurança
+
+US1.1 — Login com credenciais
+Como psicólogo cadastrado, quero inserir usuário e senha para acessar o sistema.
+Critérios de Aceite:
+- Usuário deve informar login e senha.
+- Caso válidos → sistema gera token JWT e direciona para Dashboard.
+- Caso inválidos → mensagem de erro.
+Prioridade: Alta
+
+US1.2 — Redefinição de senha
+Como psicólogo, quero redefinir minha senha informando usuário, CPF e email.
+Critérios de Aceite:
+- Formulário deve validar dados contra cadastro.
+- Nova senha deve ser salva e substituir a anterior.
+- Usuário deve receber mensagem de confirmação.
+Prioridade: Alta
+
+US1.3 — Encerramento de sessão
+Como usuário autenticado, quero sair do sistema para evitar acessos indevidos.
+Critérios de Aceite:
+- Botão 'Sair' deve encerrar a sessão (invalidar token JWT).
+- Usuário deve ser redirecionado ao login.
+Prioridade: Alta
+

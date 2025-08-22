@@ -1,0 +1,7 @@
+ID: US010
+Title: Patient Listing
+Description: As a psychologist, I want to view a list of registered patients.
+Acceptance Criteria:
+- List patients in alphabetical order.
+- Display: name, age, diagnosis, demand, and responsible person.
+- Clicking a patient must open their details page.

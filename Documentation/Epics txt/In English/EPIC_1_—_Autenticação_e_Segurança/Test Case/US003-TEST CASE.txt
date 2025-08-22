@@ -1,0 +1,24 @@
+TEST CASE ( Based On ISO-29119-3 )
+
+ID: 004
+Title: Logout the application
+Priority: 1
+Traceability: User Story 003
+
+Pre Conditions: User must be logged in
+
+Steps:
+1 - Make sure the user is logged in - Expected: The user is logged in
+2 - Click on [Sair] button at the top right of the window  - Expected: The user is redirected to the Login Page
+
+ID: 005
+Title: Try to access the dashboard URL logged out
+Priority: 2
+Traceability: User Story 003
+
+Pre Conditions: User must be logged in
+
+Steps:
+1 - Make sure the user is logged in - Expected: The user is logged in
+2 - Click on [Sair] button at the top right of the window  - Expected: The user is redirected to the Login Page
+3 - Set the URL as http://localhost:3000/#/dashboard - Expected: The user can not have access to the dashboard page

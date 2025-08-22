@@ -1,0 +1,7 @@
+ID: US001
+Title: Login with Credentials
+Description: As a registered psychologist, I want to enter my username and password to access the system.
+Acceptance Criteria:
+- The user must provide a username and password.
+- If valid, the system generates a JWT token and redirects to the Dashboard.
+- If invalid, an error message is displayed.
