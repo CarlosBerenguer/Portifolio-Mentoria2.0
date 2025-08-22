@@ -1,0 +1,7 @@
+ID: US011
+Title: Patient Details
+Description: As a psychologist, I want to view detailed patient information.
+Acceptance Criteria:
+- The page must display a header with name, age, diagnosis, demand, and responsible person.
+- It must show associated session notes.
+- An option to add a new note must be available.

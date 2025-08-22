@@ -1,0 +1,11 @@
+TEST CASE ( Based On ISO-29119-3 )
+
+ID: 012
+Title: View Prontuários (List of Patients)
+Priority: 1
+Traceability: User Story 010
+
+Pre Conditions: To be Logged in
+
+Steps:
+1 - ON Dashboard page, Click on [Prontuários] - Expected: The "Prontuários" page is displayed with a list of patients

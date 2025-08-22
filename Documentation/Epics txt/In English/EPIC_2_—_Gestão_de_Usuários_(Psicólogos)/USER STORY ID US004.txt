@@ -1,0 +1,8 @@
+ID: US004
+Title: New User Registration
+Description: I want to register a psychologist with personal and professional information.
+Acceptance Criteria:
+- All mandatory fields must be filled.
+- CPF and CRP must be unique.
+- The password must be encrypted.
+- Return a success or error message.

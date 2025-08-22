@@ -1,0 +1,7 @@
+ID: US007
+Title: User Data Update
+Description: As a psychologist, I want to update my personal information.
+Acceptance Criteria:
+- The psychologist can edit their data (except CPF and CRP).
+- The system must validate mandatory fields.
+- Updates must reflect immediately.

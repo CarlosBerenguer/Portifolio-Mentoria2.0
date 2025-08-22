@@ -1,0 +1,35 @@
+EPIC 2 — Gestão de Usuários (Psicólogos)
+
+US2.1 — Cadastro de novo usuário
+Como administrador, quero cadastrar um psicólogo com dados pessoais e profissionais.
+Critérios de Aceite:
+- Todos os campos obrigatórios devem ser preenchidos.
+- CPF e CRP devem ser únicos.
+- Senha deve ser criptografada.
+- Retornar mensagem de sucesso ou erro.
+Prioridade: Alta
+
+US2.2 — Upload de foto do usuário
+Como psicólogo, quero enviar minha foto de perfil para personalizar minha conta.
+Critérios de Aceite:
+- Psicólogo deve poder selecionar imagem para upload.
+- Caminho deve ser salvo no banco.
+- Foto deve aparecer no perfil.
+Prioridade: Média
+
+US2.3 — Consulta de perfil
+Como psicólogo logado, quero visualizar minhas informações de cadastro na tela de perfil.
+Critérios de Aceite:
+- Usuário logado deve visualizar seus dados cadastrados.
+- Informações devem vir do banco.
+- Campos somente leitura.
+Prioridade: Média
+
+US2.4 — Atualização de dados do usuário
+Como psicólogo, quero editar meus dados pessoais e profissionais.
+Critérios de Aceite:
+- Psicólogo pode editar seus dados (exceto CPF e CRP).
+- Sistema deve validar campos obrigatórios.
+- Atualizações devem refletir imediatamente.
+Prioridade: Média
+

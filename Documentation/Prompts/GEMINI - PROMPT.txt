@@ -1,0 +1,132 @@
+Com certeza. O seu novo texto é muito mais específico, o que é excelente para a criação de um prompt preciso. Com base nas suas atualizações, preparei um prompt completo e uma modelagem de dados que a IA generativa, como a do Visual Studio Code ou Cursor, poderá usar para construir o sistema.
+
+Abaixo, você encontrará a estrutura do prompt, a modelagem para o banco de dados MySQL e uma lista de pontos que identifiquei para você revisar.
+
+---
+
+### **Prompt para IA Generativa**
+
+**Objetivo Geral:**
+Construir um **Sistema de Controle para Psicólogos**, composto por uma **API RESTful** e uma **Aplicação Web**. O sistema deve ser desenvolvido com uma arquitetura de separação de responsabilidades (back-end e front-end em instâncias/portas diferentes) e focar inicialmente no módulo de Prontuários.
+
+**Tecnologias:**
+- **Back-end (API):**
+    - Linguagem: JavaScript
+    - Framework: **Express.js**
+    - Banco de Dados: **MySQL** (com a modelagem de dados fornecida)
+    - Comunicação: **JSON**
+    - Documentação da API: **Swagger**, configurado para ser acessível na rota `/api-docs`. Use `swagger-ui-express` e `swagger-jsdoc` para gerar a documentação a partir dos comentários JSDoc nos endpoints.
+    - Upload de arquivos: Utilizar a biblioteca **`multer`** para gerenciar o upload e o armazenamento de fotos no servidor.
+    - Segurança: Implementar um sistema de login e autenticação robusto.
+
+- **Front-end (Sistema Web):**
+    - Linguagens: **HTML, CSS, JavaScript**
+    - Frameworks/Bibliotecas: **Express.js** (para servir arquivos estáticos), **MaterializeCSS** (para estilos), e uma biblioteca de manipulação de datas como o **`moment.js`**.
+    - UX: Implementar **tooltips** com a mensagem "Em Breve" nos botões de funcionalidades futuras (`Agendamentos` e `Financeiro`).
+    - Navegação: A interface deve ser dinâmica, carregando o conteúdo via JavaScript para simular uma **SPA (Single Page Application)**.
+
+**Estrutura do Projeto:**
+- Crie uma estrutura de pastas modular com o back-end em `/server` e o front-end em `/public`.
+- O servidor Express para a API deve rodar em uma porta (ex: `3001`), e o servidor Express para o front-end deve rodar em outra (ex: `3000`), servindo os arquivos estáticos. A API será acessada em `/api`.
+- Instale todas as dependências necessárias via `npm install` (`express`, `mysql2`, `bcrypt`, `multer`, `swagger-ui-express`, `swagger-jsdoc`, etc.).
+- Crie um arquivo `README.md` completo com instruções de instalação, configuração, execução e uma descrição dos endpoints.
+
+---
+
+**Funcionalidades Detalhadas:**
+
+**1. Telas de Login e Cadastro**
+- **Login:**
+    - Campos: **Usuário** e **Senha**.
+    - Em caso de sucesso, redireciona para a **Dashboard**.
+- **Esqueci minha Senha:**
+    - Ao clicar no link, os campos de login são substituídos por **Usuário**, **E-mail** e **CPF**.
+    - Após a validação, os campos são substituídos por **Nova Senha** e **Confirmação de Senha**.
+- **Cadastro de Novo Usuário (Psicólogo):**
+    - Formulário com campos para: **Usuário**, **Senha**, **Confirmação de Senha**, **Nome Completo**, **CPF**, **CRP** (como um campo de dropdown pré-preenchido com as especialidades mais comuns, como: Terapia Cognitivo-Comportamental, Psicanálise, Psicologia Humanista, Psicologia Clínica, Psicologia Organizacional, etc.), **Data de Nascimento**, **E-mail**, **Telefone** (com máscara), **Especialidade**, **Endereço** e **Foto**.
+    - O botão "Salvar" deve processar os dados, fazer o upload da foto e persistir as informações.
+
+**2. Dashboard**
+- **Cabeçalho:**
+    - Componente fixo em todas as páginas internas, exibindo **Nome do Psicólogo**, **CRP** e **Especialidade** (dados do usuário logado).
+- **Botão de Perfil:**
+    - Botão pequeno no canto superior direito com a foto do psicólogo.
+    - Ao clicar, exibe um menu com **"Informações do Perfil"** e **"Sair"**.
+    - **"Informações do Perfil"**: Redireciona para a página de perfil.
+    - **"Sair"**: Desloga o usuário e o redireciona para a tela de login.
+- **Botões Principais:**
+    - **"Prontuário"**: Redireciona para a tela de prontuários.
+    - **"Agendamentos"** e **"Financeiro"**: Mantenha esses botões desativados e exiba um **tooltip "Em Breve"** ao passar o mouse.
+
+**3. Página de Perfil**
+- Exibe todos os dados cadastrais do psicólogo.
+- Inclui um botão **"Editar"**.
+- Ao clicar em "Editar", a página se transforma em um formulário para edição de perfil, semelhante à tela de "Novo Usuário".
+
+**4. Módulo de Prontuários**
+- **Lista de Pacientes:**
+    - Exiba uma tabela com as colunas: **Nome**, **Idade** (calculada em anos, meses e dias a partir da data de nascimento, atualizada em tempo real), **Diagnóstico**, **Demanda** e **Responsável**.
+- **Novo Paciente:**
+    - O botão **"Novo"** abre um formulário com campos para **Foto do Paciente**, **Nome Completo**, **Data de Nascimento**, **E-mail**, **Telefone** (com máscara), **Demanda**, **Diagnóstico**, **CPF**, **Endereço** e **Nome do Responsável** (como uma string simples).
+- **Página de Informações do Paciente:**
+    - Exiba os dados cadastrais do paciente em um cabeçalho, com os principais em destaque.
+    - Abaixo, inclua uma tabela de evolução com os registros de sessões em ordem decrescente de data e hora.
+    - Cada registro de sessão deve ter um cabeçalho com a Data e Hora e ser **expansível/colapsável**.
+    - **Novo Registro**: O botão "Novo Registro" abre uma caixa de texto e campos para o usuário adicionar a data e a hora do atendimento manualmente.
+    - O botão "Salvar" persiste o registro no banco de dados e atualiza a lista de evolução, mostrando o novo registro no topo.
+
+---
+
+### **Modelagem de Dados (MySQL)**
+
+A modelagem foi otimizada para armazenar todas as informações e gerenciar os relacionamentos entre psicólogos, pacientes e sessões.
+
+#### **Tabela `psicologos`**
+- `id` (INT, PRIMARY KEY, AUTO_INCREMENT): Identificador único.
+- `usuario` (VARCHAR(50), UNIQUE, NOT NULL): Nome de usuário para login.
+- `senha` (VARCHAR(255), NOT NULL): Senha criptografada.
+- `nome_completo` (VARCHAR(100), NOT NULL).
+- `cpf` (VARCHAR(14), UNIQUE, NOT NULL).
+- `crp` (VARCHAR(20), UNIQUE, NOT NULL).
+- `data_nascimento` (DATE).
+- `email` (VARCHAR(100), UNIQUE, NOT NULL).
+- `telefone` (VARCHAR(15)).
+- `especialidade` (VARCHAR(100)).
+- `endereco` (VARCHAR(255)).
+- `foto_perfil` (VARCHAR(255), NULL): Caminho da imagem no servidor.
+
+#### **Tabela `pacientes`**
+- `id` (INT, PRIMARY KEY, AUTO_INCREMENT): Identificador único do paciente.
+- `psicologo_id` (INT, NOT NULL, FOREIGN KEY REFERENCES `psicologos(id)`): Vincula o paciente a um psicólogo.
+- `nome_completo` (VARCHAR(100), NOT NULL).
+- `data_nascimento` (DATE).
+- `email` (VARCHAR(100)).
+- `telefone` (VARCHAR(15)).
+- `demanda` (TEXT).
+- `diagnostico` (VARCHAR(255)).
+- `cpf` (VARCHAR(14), UNIQUE, NULL): CPF do paciente é opcional.
+- `endereco` (VARCHAR(255)).
+- `nome_responsavel` (VARCHAR(100)).
+- `foto_paciente` (VARCHAR(255), NULL): Caminho da imagem no servidor.
+
+#### **Tabela `sessoes`**
+- `id` (INT, PRIMARY KEY, AUTO_INCREMENT): Identificador único da sessão.
+- `paciente_id` (INT, NOT NULL, FOREIGN KEY REFERENCES `pacientes(id)`): Vincula a sessão a um paciente.
+- `psicologo_id` (INT, NOT NULL, FOREIGN KEY REFERENCES `psicologos(id)`): Vincula a sessão ao psicólogo que a registrou.
+- `data_hora_sessao` (DATETIME, NOT NULL): Data e hora da sessão.
+- `texto_evolucao` (TEXT, NOT NULL): O registro textual da sessão.
+
+---
+
+
+
+
+
+
+### **Correções e Sugestões**
+
+Com base na sua revisão, a clareza dos requisitos melhorou muito. A modelagem de dados que preparei já reflete todas as suas atualizações.
+
+A única observação é que a lista de especializações para o campo CRP deve ser fornecida ao front-end. A IA pode realizar a pesquisa para preencher essa lista automaticamente, garantindo que o seu sistema seja o mais completo possível desde o início.
+
+Com este prompt e modelagem de dados, a IA terá todas as informações necessárias para iniciar a construção do seu sistema.

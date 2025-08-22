@@ -1,0 +1,7 @@
+ID: US009
+Title: Patient Photo Upload
+Description: As a psychologist, I want to attach a photo to a patient's profile.
+Acceptance Criteria:
+- The psychologist can upload a patient’s image.
+- The image path must be saved in the database.
+- The photo must appear in the patient’s listing and profile.

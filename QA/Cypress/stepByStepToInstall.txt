@@ -1,0 +1,4 @@
+At Cypress folder
+npm init -y
+npm i -D cypress @badeball/cypress-cucumber-preprocessor @bahmutov/cypress-esbuild-preprocessor
+npx cypress open

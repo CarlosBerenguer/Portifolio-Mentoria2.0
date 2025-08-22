@@ -1,0 +1,32 @@
+TEST CASE ( Based On ISO-29119-3 )
+
+ID: 013
+Title: Create a new Session Note
+Priority: 1
+Traceability: User Story 014
+
+Pre Conditions: To be Logged in as a Psychologist
+
+Steps:
+1 - ON Dashboard page, Click on [Prontuários] - Expected: The "Prontuários" page is displayed with a list of patients
+2 - Click on the fisrt Patient of the list - Expected: The Patient Detail page is displayed
+3 - Click on [+] button - Expected: The [NOVA EVOLUÇÃO] page is displayed
+4 - Set Evolution Title
+5 - Set Evolution Data
+6 - Set Evolution Time (the hour the Evolution is being created)
+7 - Set the Evolution Content related to the section with the patient
+8 - Click on [SALVAR] button - Expected: The new Evolution is saved, the user is redirected to the Patient Detail Page and the new Evolution is now listed
+
+ID: 014
+Title: Create a new Session Note Missing data
+Priority: 1
+Traceability: User Story 014
+
+Pre Conditions: To be Logged in as a Psychologist
+
+Steps:
+1 - ON Dashboard page, Click on [Prontuários] - Expected: The "Prontuários" page is displayed with a list of patients
+2 - Click on the fisrt Patient of the list - Expected: The Patient Detail page is displayed
+3 - Click on [+] button - Expected: The [NOVA EVOLUÇÃO] page is displayed
+4 - Set Only the Evolution Content related to the section with the patient
+5 - Click on [SALVAR] button - Expected: A validation message is displayed in each required field one by one

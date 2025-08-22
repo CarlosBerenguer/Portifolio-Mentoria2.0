@@ -1,0 +1,51 @@
+EPIC 3 — Gestão de Pacientes
+8
+US3.1 — Cadastro de paciente
+Como psicólogo, quero cadastrar um paciente com informações pessoais e clínicas.
+Critérios de Aceite:
+- Cadastro deve conter todos os campos.
+- CPF (se informado) não pode repetir.
+- Foto deve ser opcional.
+- Retornar mensagem de sucesso.
+Prioridade: Alta
+9
+US3.2 — Upload de foto do paciente
+Como psicólogo, quero cadastrar a foto de cada paciente.
+Critérios de Aceite:
+- Psicólogo pode anexar imagem do paciente.
+- Caminho deve ser salvo no Servidor.
+- Foto deve aparecer na listagem e perfil.
+Prioridade: Baixa
+10
+US3.3 — Listagem de pacientes
+Como psicólogo, quero visualizar uma lista de pacientes cadastrados.
+Critérios de Aceite:
+- Listar pacientes cadastrados em ordem alfabética.
+- Mostrar: nome, idade, diagnóstico, demanda, responsável.
+- Ação de clique deve abrir tela de detalhes.
+Prioridade: Alta
+11
+US3.4 — Detalhes do paciente
+Como psicólogo, quero acessar a tela de informações detalhadas de um paciente.
+Critérios de Aceite:
+- Tela deve mostrar cabeçalho com nome, idade, diagnóstico, demanda, responsável.
+- Deve exibir evoluções associadas.
+- Opção de novo registro disponível.
+Prioridade: Alta
+12
+US3.5 — Atualização de cadastro do paciente
+Como psicólogo, quero editar informações de um paciente já cadastrado.
+Critérios de Aceite:
+- Psicólogo pode editar dados.
+- CPF não pode ser duplicado.
+- Atualização deve salvar corretamente.
+Prioridade: Média
+13
+US3.6 — Desativar paciente
+Como psicólogo, quero Desativar um paciente e suas evoluções porém sem excluir os dados do banco.
+Critérios de Aceite:
+- Psicólogo pode Desativar paciente.
+- Paciente aparece na lista com cor Cinza e Flag "Desativado".
+- Confirmar Desativação antes da ação.
+Prioridade: Baixa
+

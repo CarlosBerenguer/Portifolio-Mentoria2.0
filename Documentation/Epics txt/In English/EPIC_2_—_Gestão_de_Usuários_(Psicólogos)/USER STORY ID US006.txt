@@ -1,0 +1,7 @@
+ID: US006
+Title: Profile View
+Description: As a logged-in user, I want to view my registered information.
+Acceptance Criteria:
+- The logged-in user must see their registered data.
+- Information must be retrieved from the database.
+- Fields must be read-only.

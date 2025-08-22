@@ -1,0 +1,27 @@
+TEST CASE ( Based On ISO-29119-3 )
+
+ID: 006
+Title: Create User
+Priority: 1
+Traceability: User Story 004
+
+Pre Conditions: 
+
+Steps:
+1 - Go to login Page - Expected: Login page is displayed
+2 - Click on [Registre-se] link - Expected: The New User page is displayed
+3 - Fill all the fields available 
+4 - Click on [Registrar] button - The user is redirected to the login page and a success message is displayed
+
+ID: 007
+Title: Create User with invalid Data
+Priority: 2
+Traceability: User Story 004
+
+Pre Conditions: 
+
+Steps:
+1 - Go to login Page - Expected: Login page is displayed
+2 - Click on [Registre-se] link - Expected: The New User page is displayed
+3 - Fill the fields with the same same as TC006 
+4 - Click on [Registrar] button - The user can not be accepted with same user, cpf or crp and a Failed message is displayed

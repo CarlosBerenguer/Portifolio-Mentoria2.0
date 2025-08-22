@@ -1,0 +1,6 @@
+ID: US018
+Title: Profile Menu Access
+Description: As a logged-in user, I want to access a profile menu.
+Acceptance Criteria:
+- The menu must include options: "Profile Information" and "Logout".
+- It must open when clicking the photo.

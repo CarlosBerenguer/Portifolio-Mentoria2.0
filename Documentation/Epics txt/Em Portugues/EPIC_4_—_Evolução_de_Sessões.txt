@@ -1,0 +1,26 @@
+EPIC 4 — Evolução de Sessões
+
+US4.1 — Registro de evolução
+Como psicólogo, quero registrar uma evolução de sessão.
+Critérios de Aceite:
+- Deve haver textarea para observação.
+- Data/hora devem ser salvas automaticamente.
+- Registro deve aparecer no topo da lista.
+Prioridade: Alta
+
+US4.2 — Listagem de evoluções
+Como psicólogo, quero visualizar todas as evoluções de um paciente.
+Critérios de Aceite:
+- Evoluções devem aparecer em ordem decrescente.
+- Mostrar data/hora e resumo.
+- Deve permitir expandir/colapsar texto.
+Prioridade: Alta
+
+US4.3 — Expansão/colapso de evolução
+Como psicólogo, quero expandir ou ocultar os detalhes de uma evolução.
+Critérios de Aceite:
+- Registros devem iniciar colapsados.
+- Ao clicar, mostrar conteúdo completo.
+- Ao clicar novamente, ocultar.
+Prioridade: Média
+

@@ -1,0 +1,339 @@
+**Prompt para Ferramenta de IA Generativa**
+
+Você deve criar um sistema completo para psicólogos gerenciarem registros de pacientes, incluindo uma API RESTful documentada via Swagger e uma aplicação web, com um banco de dados relacional MySQL. O sistema deve atender aos requisitos abaixo, com uma estrutura de pastas clara, bibliotecas necessárias e um README.md detalhado. Abaixo estão as especificações detalhadas, o modelo de dados e notas sobre suposições para resolver problemas identificados.
+
+---
+
+### Visão Geral do Sistema
+- **Objetivo**: Um sistema web para psicólogos gerenciarem registros de pacientes, com foco no módulo Prontuário. Os módulos Agendamento e Financeiro serão implementados futuramente.
+- **Tecnologias**:
+  - **Backend (API)**: Node.js com Express.js, comunicando via JSON, documentada com Swagger.
+  - **Frontend**: HTML, CSS, JavaScript puro, estilizado com MaterializeCSS, servido por Express.js apenas para arquivos estáticos.
+  - **Banco de Dados**: MySQL relacional.
+  - **Autenticação**: JWT para login e gerenciamento de sessões seguros.
+  - **Armazenamento de Arquivos**: Fotos de psicólogos e pacientes armazenadas em `/uploads` no servidor, com caminhos salvos no banco.
+
+---
+
+### Estrutura de Pastas
+Crie a seguinte estrutura de pastas:
+```
+/sistema-psicologos
+├── /client               # Frontend (HTML, CSS, JS)
+│   ├── /css              # Arquivos CSS (MaterializeCSS e personalizados)
+│   ├── /js               # Arquivos JavaScript
+│   ├── /images           # Imagens estáticas (ex.: favicon, logotipo)
+│   ├── /uploads          # Fotos de psicólogos e pacientes
+│   ├── index.html        # Página de login
+│   ├── register.html     # Cadastro de novo usuário
+│   ├── dashboard.html    # Dashboard
+│   ├── profile.html      # Perfil do psicólogo
+│   ├── prontuario.html   # Lista de prontuários
+│   ├── new-patient.html  # Cadastro de novo paciente
+│   └── patient-details.html # Detalhes do paciente
+├── /server               # API Node.js/Express
+│   ├── /controllers      # Manipuladores de requisições
+│   ├── /models           # Modelos do banco (consultas SQL)
+│   ├── /routes           # Rotas da API
+│   ├── /middleware       # Middlewares de autenticação e validação
+│   ├── /swagger          # Configuração do Swagger
+│   └── server.js         # Ponto de entrada da API
+├── /sql                  # Scripts SQL para configuração do banco
+│   └── schema.sql        # Esquema MySQL e dados iniciais
+├── .env                  # Variáveis de ambiente (ex.: credenciais do banco, segredo JWT)
+├── .gitignore            # Arquivo de exclusão do Git
+└── README.md             # Documentação do projeto
+```
+
+---
+
+### Requisitos
+
+#### 1. Tela de Login (`index.html`)
+- **Campos**:
+  - Usuário (texto)
+  - Senha (senha)
+  - Link: "Esqueci minha senha"
+  - Link: "Cadastrar novo usuário" (redireciona para `register.html`)
+- **Esqueci minha senha**:
+  - Substitui os campos por:
+    - Usuário (texto)
+    - CPF (texto, com máscara: XXX.XXX.XXX-XX)
+    - E-mail (e-mail)
+  - Se válido (corresponde aos dados do banco), exibir:
+    - Código Temporário (texto, enviado por e-mail)
+    - Nova Senha (senha)
+    - Confirmação de Nova Senha (senha)
+  - **Suposição**: Enviar um código temporário ao e-mail registrado via Nodemailer, que o usuário insere antes de definir a nova senha.
+- **Tela de Novo Usuário (`register.html`)**:
+  - Campos:
+    - Usuário (texto, único)
+    - Senha (senha)
+    - Confirmação de Senha (senha)
+    - Nome Completo (texto)
+    - CPF (textoWITH MASK: XXX.XXX.XXX-XX)
+    - CRP (texto, ex.: "06/123456")
+    - Data de Nascimento (data)
+    - E-mail (e-mail, único)
+    - Telefone (texto, com máscara: (XX) 9XXXX-XXXX)
+    - Especialidade (lista suspensa com: Psicologia Clínica, Psicologia Infantil, Neuropsicologia, Psicologia Organizacional, Psicologia Escolar, Psicanálise, Terapia Cognitivo-Comportamental, Psicologia Hospitalar, Psicologia do Esporte, Outros)
+    - Endereço (texto)
+    - Foto (upload de arquivo)
+  - Botão: "Salvar"
+- **Comportamento**:
+  - Login bem-sucedido redireciona para `dashboard.html`.
+  - Senhas criptografadas com bcrypt.
+  - Validar formato e unicidade de CPF e e-mail.
+
+#### 2. Dashboard (`dashboard.html`)
+- **Cabeçalho** (em todas as telas após login):
+  - Exibe: Nome Completo do Psicólogo, CRP, Especialidade.
+- **Botão de Perfil**:
+  - Botão pequeno no canto superior direito com a foto do psicólogo.
+  - Abre um menu suspenso com:
+    - "Informações do Perfil" (redireciona para `profile.html`)
+    - "Sair" (desloga e redireciona para `index.html`)
+- **Conteúdo Principal**:
+  - Três botões ovais grandes:
+    - Prontuário (redireciona para `prontuario.html`)
+    - Agendamentos (desativado, com tooltip "Em Breve")
+    - Financeiro (desativado, com tooltip "Em Breve")
+
+#### 3. Página de Perfil (`profile.html`)
+- Exibe todos os detalhes do psicólogo (do cadastro em `register.html`).
+- Botão "Editar" abre um formulário idêntico ao de `register.html`, exceto por CPF e CRP (não editáveis).
+- Botão "Salvar" para atualizar as alterações.
+
+#### 4. Prontuário (`prontuario.html`)
+- **Tela Principal**:
+  - Tabela com colunas:
+    - Nome do Paciente
+    - Idade (calculada dinamicamente em anos, meses, dias)
+    - Diagnóstico
+    - Demanda
+    - Responsável
+  - Botão: "Novo" (redireciona para `new-patient.html`)
+- **Tela de Novo Paciente (`new-patient.html`)**:
+  - Campos:
+    - Foto (upload de arquivo)
+    - Nome Completo (texto)
+    - Data de Nascimento (data)
+    - E-mail (e-mail, opcional)
+    - Telefone (texto, com máscara: (XX) 9XXXX-XXXX, opcional)
+    - Demanda (texto)
+    - Diagnóstico (texto)
+    - CPF (texto, com máscara: XXX.XXX.XXX-XX, opcional)
+    - Endereço (texto)
+    - Responsável (texto, opcional)
+  - Botão: "Salvar"
+- **Tela de Detalhes do Paciente (`patient-details.html`)**:
+  - **Cabeçalho**: Exibe Nome Completo, Idade (anos, meses, dias), Diagnóstico, Demanda em destaque, com outros detalhes abaixo.
+  - **Tabela de Evolução**:
+    - Lista registros de sessões (mais recentes primeiro).
+    - Cada linha contém:
+      - Cabeçalho: Data e Hora (inseridas manualmente, formato DD/MM/AAAA HH:MM)
+      - Conteúdo: Notas da sessão (texto, expansível/recolhível via JavaScript).
+    - Recolhível: Mostra apenas o cabeçalho; expandido: mostra cabeçalho e notas.
+  - Botão: "Novo Registro" (abre uma área de texto com campos para data, hora e notas).
+  - Botão: "Salvar" (salva o registro, atualiza a tabela, exibe na primeira posição).
+
+---
+
+### Esquema do Banco de Dados (MySQL)
+Crie um esquema MySQL com as tabelas abaixo, usando InnoDB, índices apropriados e restrições de chaves estrangeiras.
+
+1. **psicologos**:
+   - `id` (INT, PRIMARY KEY, AUTO_INCREMENT)
+   - `usuario` (VARCHAR(50), UNIQUE, NOT NULL)
+   - `senha` (VARCHAR(255), NOT NULL) // Criptografada com bcrypt
+   - `nome_completo` (VARCHAR(100), NOT NULL)
+   - `cpf` (VARCHAR(14), UNIQUE, NOT NULL) // Formato: XXX.XXX.XXX-XX
+   - `crp` (VARCHAR(20), NOT NULL) // Ex.: 06/123456
+   - `data_nascimento` (DATE, NOT NULL)
+   - `email` (VARCHAR(100), UNIQUE, NOT NULL)
+   - `telefone` (VARCHAR(15), NOT NULL) // Formato: (XX) 9XXXX-XXXX
+   - `especialidade` (VARCHAR(50), NOT NULL) // Ex.: Psicologia Clínica
+   - `endereco` (TEXT, NOT NULL)
+   - `caminho_foto` (VARCHAR(255)) // Ex.: /uploads/psychologist_1.jpg
+   - `criado_em` (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+
+2. **pacientes**:
+   - `id` (INT, PRIMARY KEY, AUTO_INCREMENT)
+   - `psicologo_id` (INT, FOREIGN KEY referenciando psicologos(id), NOT NULL)
+   - `nome_completo` (VARCHAR(100), NOT NULL)
+   - `data_nascimento` (DATE, NOT NULL)
+   - `email` (VARCHAR(100))
+   - `telefone` (VARCHAR(15)) // Formato: (XX) 9XXXX-XXXX
+   - `demanda` (TEXT, NOT NULL)
+   - `diagnostico` (TEXT, NOT NULL)
+   - `cpf` (VARCHAR(14)) // Formato: XXX.XXX.XXX-XX
+   - `endereco` (TEXT, NOT NULL)
+   - `responsavel` (VARCHAR(100)) // Opcional
+   - `caminho_foto` (VARCHAR(255)) // Ex.: /uploads/patient_1.jpg
+   - `criado_em` (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+
+3. **registros_sessoes**:
+   - `id` (INT, PRIMARY KEY, AUTO_INCREMENT)
+   - `paciente_id` (INT, FOREIGN KEY referenciando pacientes(id), NOT NULL)
+   - `data_sessao` (DATETIME, NOT NULL) // Inserida manualmente
+   - `notas` (TEXT, NOT NULL)
+   - `criado_em` (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+
+**Notas**:
+- Use restrições UNIQUE para `usuario`, `email`, `cpf` em `psicologos` e `cpf` em `pacientes` (quando não nulo).
+- Crie índices em `psicologo_id` (pacientes) e `paciente_id` (registros_sessoes) para desempenho.
+- Armazene CPF e telefone sem máscaras no banco (ex.: 12345678901, 11987654321) para consistência.
+
+---
+
+### Endpoints da API (Express.js)
+Crie uma API RESTful com os endpoints abaixo, documentados com Swagger (`swagger-ui-express`, `swagger-jsdoc`). Use JSON para requisições/respostas.
+
+1. **Autenticação**:
+   - `POST /api/auth/login`
+     - **Descrição**: Autentica um psicólogo, retorna JWT.
+     - **Corpo**: `{ usuario: string, senha: string }`
+     - **Resposta**: `{ token: string, psicologo: { id, nome_completo, crp, especialidade, caminho_foto } }`
+   - `POST /api/auth/esqueci-senha`
+     - **Descrição**: Inicia redefinição de senha, envia código temporário por e-mail.
+     - **Corpo**: `{ usuario: string, cpf: string, email: string }`
+     - **Resposta**: `{ mensagem: string, codigo: string }`
+   - `POST /api/auth/redefinir-senha`
+     - **Descrição**: Redefine a senha usando o código temporário.
+     - **Corpo**: `{ usuario: string, codigo: string, nova_senha: string, confirmar_senha: string }`
+     - **Resposta**: `{ mensagem: string }`
+   - `POST /api/auth/cadastrar`
+     - **Descrição**: Cadastra um novo psicólogo.
+     - **Corpo**: `{ usuario, senha, confirmar_senha, nome_completo, cpf, crp, data_nascimento, email, telefone, especialidade, endereco, foto: arquivo }`
+     - **Resposta**: `{ mensagem: string, psicologo: { id, nome_completo, ... } }`
+
+2. **Perfil do Psicólogo**:
+   - `GET /api/psicologo/:id`
+     - **Descrição**: Obtém detalhes do perfil do psicólogo.
+     - **Resposta**: `{ id, usuario, nome_completo, cpf, crp, data_nascimento, email, telefone, especialidade, endereco, caminho_foto }`
+   - `PUT /api/psicologo/:id`
+     - **Descrição**: Atualiza o perfil (exceto cpf, crp).
+     - **Corpo**: `{ usuario, nome_completo, data_nascimento, email, telefone, especialidade, endereco, foto: arquivo }`
+     - **Resposta**: `{ mensagem: string, psicologo: { ... } }`
+
+3. **Pacientes**:
+   - `GET /api/pacientes`
+     - **Descrição**: Lista pacientes do psicólogo autenticado.
+     - **Resposta**: `[{ id, nome_completo, data_nascimento, email, telefone, demanda, diagnostico, cpf, endereco, responsavel, caminho_foto }]`
+   - `POST /api/pacientes`
+     - **Descrição**: Cria um novo paciente.
+     - **Corpo**: `{ nome_completo, data_nascimento, email, telefone, demanda, diagnostico, cpf, endereco, responsavel, foto: arquivo }`
+     - **Resposta**: `{ mensagem: string, paciente: { ... } }`
+   - `GET /api/pacientes/:id`
+     - **Descrição**: Obtém detalhes de um paciente.
+     - **Resposta**: `{ id, nome_completo, data_nascimento, email, telefone, demanda, diagnostico, cpf, endereco, responsavel, caminho_foto }`
+
+4. **Registros de Sessões**:
+   - `GET /api/pacientes/:pacienteId/sessoes`
+     - **Descrição**: Lista registros de sessões (mais recentes primeiro).
+     - **Resposta**: `[{ id, data_sessao, notas, criado_em }]`
+   - `POST /api/pacientes/:pacienteId/sessoes`
+     - **Descrição**: Cria um novo registro de sessão.
+     - **Corpo**: `{ data_sessao: string, notas: string }` // data_sessao: DD/MM/AAAA HH:MM
+     - **Resposta**: `{ mensagem: string, sessao: { id, data_sessao, notas, criado_em } }`
+
+**Notas**:
+- Configure Swagger em `/api-docs` com anotações detalhadas.
+- Proteja endpoints (exceto login/cadastro) com middleware JWT.
+- Valide entradas (ex.: formato de CPF, e-mail, data_sessao).
+- Use `multer` para uploads de fotos, salvando em `/uploads`.
+- Retorne códigos HTTP apropriados (200, 400, 401, 404).
+
+---
+
+### Frontend (HTML, CSS, JavaScript)
+- Use HTML, CSS, JavaScript puro, estilizado com MaterializeCSS (via CDN).
+- Crie páginas HTML separadas (`index.html`, `register.html`, etc.).
+- Use MaterializeCSS para formulários, tabelas, botões e menus responsivos.
+- Implemente máscaras de entrada para CPF (`XXX.XXX.XXX-XX`) e Telefone (`(XX) 9XXXX-XXXX`) com `Inputmask` (via CDN).
+- Calcule a idade dinamicamente em `/client/js/utils.js`:
+  ```javascript
+  function calcularIdade(dataNascimento) {
+    const hoje = new Date();
+    const dataNasc = new Date(dataNascimento);
+    if (dataNasc > hoje) throw new Error("Data de nascimento inválida");
+    let anos = hoje.getFullYear() - dataNasc.getFullYear();
+    let meses = hoje.getMonth() - dataNasc.getMonth();
+    let dias = hoje.getDate() - dataNasc.getDate();
+    if (dias < 0) {
+      meses--;
+      dias += new Date(hoje.getFullYear(), hoje.getMonth(), 0).getDate();
+    }
+    if (meses < 0) {
+      anos--;
+      meses += 12;
+    }
+    return { anos, meses, dias };
+  }
+  ```
+- Implemente registros de sessões expansíveis/recolhíveis manipulando o DOM.
+- Use `fetch` para chamadas à API.
+- Sirva arquivos estáticos com Express.js em `/static`.
+
+---
+
+### Bibliotecas e Dependências
+- **Backend (package.json)**:
+  - express
+  - mysql2
+  - bcrypt
+  - jsonwebtoken
+  - multer
+  - nodemailer
+  - swagger-ui-express
+  - swagger-jsdoc
+  - dotenv
+  - cors
+- **Frontend**:
+  - MaterializeCSS (CDN)
+  - Inputmask (CDN)
+- **Dev Dependencies**:
+  - nodemon
+
+---
+
+### README.md
+Crie um `README.md` com:
+- Título e descrição do projeto.
+- Instruções de instalação (backend e frontend).
+- Configuração de variáveis de ambiente (`.env` com DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, JWT_SECRET, EMAIL_USER, EMAIL_PASS).
+- Configuração do banco (executar `schema.sql`).
+- Como executar (backend: `npm run start`, acessar frontend em `/static`).
+- Acesso à documentação da API em `/api-docs`.
+- Notas sobre suposições:
+  - Redefinição de senha via e-mail com código temporário.
+  - Fotos em `/uploads` com caminhos no banco.
+  - Especialidade com lista predefinida.
+  - Responsável opcional (string).
+  - Idade calculada dinamicamente.
+  - Data/hora da sessão inserida manualmente com validação.
+  - Botões de Financeiro/Agendamento desativados com tooltip "Em Breve".
+  - API em `/api`, arquivos estáticos em `/static`.
+
+---
+
+### Notas para a IA
+- Garanta restrições de chave estrangeira e índices no banco.
+- Valide entradas (CPF, e-mail, data_sessao no formato DD/MM/AAAA HH:MM).
+- Trate erros (ex.: 404 para paciente inválido).
+- Use MaterializeCSS para estilização responsiva.
+- Teste uploads de fotos com `multer`.
+- Inclua dados de exemplo em `schema.sql` (1 psicólogo, 2 pacientes, 3 registros de sessões).
+- Configure Swagger em `/api-docs`.
+- Use uma instância Express.js com API em `/api` (porta 3000) e arquivos estáticos em `/static`.
+
+---
+
+Gere todos os arquivos:
+- Backend: `server.js`, controladores, rotas, modelos, middlewares, configuração Swagger.
+- Frontend: Arquivos HTML, CSS, JS, estilizados com MaterializeCSS.
+- SQL: `schema.sql` com tabelas e dados de exemplo.
+- Configuração: `.env`, `.gitignore`, `package.json`.
+- Documentação: `README.md`.
+
+Garanta segurança, escalabilidade e melhores práticas para Node.js/Express, HTML, CSS, JavaScript e MaterializeCSS.

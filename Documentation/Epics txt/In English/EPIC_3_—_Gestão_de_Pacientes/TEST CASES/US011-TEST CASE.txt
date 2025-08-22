@@ -1,0 +1,15 @@
+TEST CASE ( Based On ISO-29119-3 )
+
+ID: 013
+Title: View Patients Details
+Priority: 1
+Traceability: User Story 011
+
+Pre Conditions: To be Logged in
+
+Steps:
+1 - ON Dashboard page, Click on [Prontuários] - Expected: The "Prontuários" page is displayed with a list of patients
+2 - Click on the fisrt Patient of the list - Expected: The Patient Detail page is displayed
+3 - Make Sure the Header is presente with [Nome, Idade, Diagnostico, Demanda e Responsavel] information
+4 - Make Sure there's a button [+] to add a new Evolution registration
+5 - Make Sure there's a list of Evolution registrations

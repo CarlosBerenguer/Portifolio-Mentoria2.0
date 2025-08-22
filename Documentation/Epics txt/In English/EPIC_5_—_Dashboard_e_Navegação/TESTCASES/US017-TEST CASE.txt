@@ -1,0 +1,15 @@
+TEST CASE ( Based On ISO-29119-3 )
+
+ID: 017
+Title: Test Dashboard Access
+Priority: 1
+Traceability: User Story 017
+
+Pre Conditions: To have a Psychologist user created
+
+Steps:
+1 - login as Psychologist - Expected: The user is redirected to the Dashboard
+2 - Make sure the Header has [Dashboard, Prontuarios, Perfil, Sair]
+3 - Make sure the Left side enu has [Dashboard, Prontuarios, Perfil, Sair]
+4 - Make Sure there's a list of the 3 last Patientes Created
+5 - Make Sure the estatistics data are correct

@@ -1,0 +1,23 @@
+EPIC 6 — Documentação e Suporte
+
+US6.1 — Documentação da API (Swagger)
+Como desenvolvedor, quero acessar a documentação Swagger da API.
+Critérios de Aceite:
+- Swagger deve listar todos os endpoints.
+- Deve ser acessível via rota /docs.
+Prioridade: Alta
+
+US6.2 — Manual do usuário
+Como psicólogo, quero ter um manual de utilização do sistema.
+Critérios de Aceite:
+- Documento deve conter instruções de uso.
+- Deve ser entregue em formato PDF.
+Prioridade: Média
+
+US6.3 — Guia de instalação
+Como técnico de TI, quero ter instruções de instalação e configuração.
+Critérios de Aceite:
+- Documento deve conter requisitos, dependências e comandos.
+- Deve instruir como configurar banco e rodar servidor.
+Prioridade: Alta
+
