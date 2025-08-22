@@ -1,5 +1,7 @@
 # Dependências
 node_modules/
+QA/Supertest-API/mochawesome-report/
+
 
 # Arquivos de ambiente
 .env
