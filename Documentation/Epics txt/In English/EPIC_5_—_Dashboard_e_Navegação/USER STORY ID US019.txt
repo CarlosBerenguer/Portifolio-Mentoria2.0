@@ -1,0 +1,6 @@
+ID: US019
+Title: Psycologycal Records Access
+Description: As a psychologist, I want to access the patient records list.
+Acceptance Criteria:
+- The "Records" button must redirect to the patient list.
+- It must always be enabled.

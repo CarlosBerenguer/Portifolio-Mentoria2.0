@@ -1,0 +1,7 @@
+ID: US005
+Title: User Photo Upload
+Description: As a psychologist, I want to upload a profile photo.
+Acceptance Criteria:
+- The psychologist must be able to select an image for upload.
+- The image path must be saved in the database.
+- The photo must appear on the profile.

@@ -1,0 +1,139 @@
+Objetivo 
+- Criar o melhor prompt possível usando as informações abaixo de "O SISTEMA" para pedir que uma IA generativa, por exemplo dentro do visual studio code ou Cursor, construa um sistema com todos esses requisitos abaixo:
+- Criar também a modelagem de dados para o banco de dados relacional MySQL que a IA GENERATIVA consiga entender e CRIAR O BANCO CORRETAMENTE E COM TODOS OS RELACIONAMENTOS NECESSARIOS
+- Caso encontre problema nos requisito ou na modelagem dos dados faça uma lista com os itens que eu precisarei corrigir
+
+    O SISTEMA
+	- Quero usar esse prompt para gerar uma API e um sistema Web de controle para psicólogos que tenha: 
+		-> Tela de Login do usuário com:
+			- campo de Usúario:
+			- campo de Senha: 
+			- Link para "Esqueci minha senha": Solicitar Usuário e Email e CPF para cadastrar nova senha ( na mesma tela de login apenas substituindo os campos )
+			- Link para "Cadastrar novo usuário": Redireciona para tela de "Novo Usuário"
+			- A tela de "Novo Usuário" deve solicitar:
+				- Usuário
+				- Senha
+				- Confirmação de Senha
+				- Nome Completo, 
+				- CPF, 
+				- CRP - [Pode ser a Dropdown com valores predefinidos. Busque na internet o maximo de especializações que encontrar para predefinirmos essa lista.]
+				- Data de nascimento, 
+				- E-mail, 
+				- Telefone(com mascara para celular), 
+				- Especialidade, 
+				- Endereço
+				- Botão de salvar
+				- Foto 
+		-> Uma Dashboard onde inicialmente deve conter: 
+			- Um Cabeçalho com:
+				- Nome do psicologo - CRP - Especialidade  
+				- ESSE CABEÇALHO DEVERÀ APARECER EM TODAS AS TELAS DENTRO DO SISTEMA ( DEPOIS DE LOGAR )
+			- Perfil: Botão pequeno no canto superior direito com foto cadastrada do psicologo 
+				- ESSE BOTÃO DEVERÀ APARECER EM TODAS AS TELAS DENTRO DO SISTEMA ( DEPOIS DE LOGAR )
+			- Prontuário:  botão oval grande
+			- Agendamentos:  botão oval grande
+			- Financeiro:  botão oval grande
+			- Por agora, faremos apenas o módulos de Prontuário. 
+			- Agendamento e Financeiro serão em próximas etapas. 
+		-> O botão "Perfil"
+			- Abrirá um menu com os botões:
+				- "Informações do Perfil"
+				- "Sair"
+			- O botão "Informações do Perfil" redirecionará para uma pagina contendo todas as informaçoes do Perfl do Usuário 
+				- O usuário terá um botão de [editar] o perfil e a tele será quase identica a tela de [Novo Usuário]
+			- O botão "Sair" deslogará o usuáio e redirecionará para a pagina de login
+
+		-> Na pagina de Prontuário deverá conter: 
+			- lista dos pacientes cadastrados 
+			- Haverão 5 colunas na lista: 
+				- Nome do paciente | Idades (mostrada em Anos, meses e dias) | Diagnostico | Demanda | Responsável 
+			- Botão "Novo": Onde abrirá uma tela para fazer cadastro de um Novo Paciente; 
+				- Esse Cadastro deverá conter: 
+					- Foto do Paciente, 
+					- Nome Completo, 
+					- Data de nascimento, 
+					- E-mail, 
+					- Telefone(com mascara para celular), 
+					- Demanda, 
+					- Diagnóstico, 
+					- CPF, 
+					- Endereço, 
+					- Nome do Responsável - [Somente uma String]
+			- Ao Clicar em um paciente da lista de Prontuários: 
+				- O sistema deverá redirecionar para uma pagina do Paciente contendo: 
+					- Cabeçalho com Todos os dados cadastrais do cliente 
+					- Coloque em destaque os principais dados: Nome Completo | Idade ( anos, meses e dias ) | Diagnóstico | Demanda 
+					- Uma Tabela para mostrar a Evolução do paciente onde cada linha é referênte a um registro de sessão feita(Os ultimos Registros de sessão em ordem do mais recente para o mais antigo) 
+					- Um Botão "Novo Registro": Onde aparecerá uma Caixa de texto onde o psicologo poderá preencher com o histórico desta sessão.
+					- Um botão de salvar ao final deste novo Registro que está sendo feito
+Contexto 
+	- Estou criando um sistema para atender aos psicólogos que hoje tem dificuldade na gestão e organização dos seus atendimentos, pagamentos, e registros de seus pacientes, 
+	Por Exemplo: Registro de sessões, Pagamento das sessões, Identificação dos pacientes e suas demandas, etc. 
+
+Regras
+	- Crie Toda a estrutura de pastas e arquivos necessária
+	- VocÊ deverá adicionar todas as bibliotecas necessárias para contruir a API e o Sistema WEB
+	- Configurar o Swagger com descrições claras dos endpoints e métodos, acessível em uma rota como /api-docs
+	- Crie uma arquivo README.md completo
+	- Todas as Fotos do sistema serão salvas no servidor)
+	- Crie o banco de dados relacional em mysql
+	- O sistema deverá expor os metodos e regras do sistema em uma API, que poderá ser acessada via Swagger, que será consumida por um sistema web
+		- os endpoints da API devem conter descrição clara de suas funcionalidades
+		- API será criada em Javascript com Express
+		- API se comunicara via Json
+	- O Sistema WEB deverá ser construido com:
+		- HTML
+		- CSS
+		- Javascript ou framework moderno
+		- Express.js (for serving static files only)
+		- MaterializeCSS (for styling).
+	- Usar instâncias separadas do Express.js (ou portas diferentes) para a API e o frontend, com a API em /api e os arquivos estáticos servidos diretamente.	
+	- Na tela de login:
+		- Os usuário cadastrado na tela de "Novo Usuário" poderão logar na aplicação com usuário e senha
+		- Clicar no link "Esqueci minha senha", altera os campos da tela de login de [usuário e senha] para [Usuario, CPF, Email]
+			- Se [Usuario, CPF, Email] forem compativeis com os dados do usuario:
+				- Os campos da tela de login serã osubstituidos de [Usuario, CPF, Email] para [Nova Senha e Confirmação de senha]
+		- Caso o login seja aprovado o usuário será redirecionado para a tela de "Dashboard"
+	- Na tela de Dashboard:
+		- As informações do cabeçalho deve ser retirados dos dados que foram cadastrados pelo usuário na tela de "Novo Usuário"
+		- Botão de Prontuário - deverá redirecionar o usuário para a tela de prontuário
+		- Botão de Financeiro - Desativar esse botão com uma mensagem de tooltip "Em Breve" para melhorar a experiência do usuário (UX).
+		- Botão de Agendamento - Desativar esse botão com uma mensagem de tooltip "Em Breve" para melhorar a experiência do usuário (UX).
+	- Na tela de Prontuário:
+		- Cada paciente da lista na tela de "Prontuários":
+			- Terá um cabeçalho com: Nome | Idade (anos, meses e dias) | Responsável | Diagnóstico | Demanda  (Esses dados são referentes aos dados cadatrados na tela de "Novo Paciente"
+			- A idade será atualizada cada vez que a pagina for atualizada considerando a data de nascimento até o momento atual.
+			- poderá ser clicado e abrirá uma nova tela com os dados do Paciente chamada "Informação do Paciente"
+		- Na tela de Informação do Paciente:
+			- O cabeçalho mostrará os dados do paciente que foram cadastrados na tela "Novo Paciente"
+			- O botão para [Novo Registro] deverá abrir uma caixa de texto
+			- O botão para [salvar] o novo registro de sessão criado deverá:
+			   - Salvar os dados no banco de dados
+			   - O novo registro deverá ser atualizado na lista de evolução do paciente
+			   - Deverá ser mostrado na primeira posição como mais recente
+			- Cada registro da lista de evolução deverá ter um cabeçalho com a Data e Hora da sessão ali descrita
+			- Data e hora de cada registro será obrigatorio e adicionado manualmente pelo usuário 
+			- O Usuário poderá Encolher ou expandir cada registro da lista de evolução 
+			- Ao Encolher, somente o cabeçalho será mostrado
+			- Ao Expandir, Será mostrado o Cabeçalho e o Conteudo (texto) registrado daquela sessão
+
+
+SUGESTÔES DE MELHORIA DO PROMPT DO GROK - * Já Aplicado ao texto Principal *
+**************************************************************************
+Sobre problemas Identificado vou trazer a minha posição item a item:
+
+2- Fotos serão salvas no servidor - OK
+
+3- A idade será atualizada cada vez que a pagina for atualizada considerando a data de nascimento até o momento atual. - ok
+
+4- Data e hora de cada registro será obrigatorio e adicionado manualmente pelo usuário até que futuramente venhamos desenvolver o modulo de agendamento, onde o registro criado será vinculado ao agendamento especifica( que ja tera data e hora salva ) - ok
+
+5- Pode ser a Dropdown com valores predefinidos. Busque na internet o maximo de especializações que encontrar para predefinirmos essa lista. - OK
+
+6- Poderá ser uma String. - OK
+
+7- Desativar ou ocultar esses botões com uma mensagem de tooltip "Em Breve" para melhorar a experiência do usuário (UX). - OK
+
+8- Configurar o Swagger com descrições claras dos endpoints e métodos, acessível em uma rota como /api-docs - OK
+
+9- Usar instâncias separadas do Express.js (ou portas diferentes) para a API e o frontend, com a API em /api e os arquivos estáticos servidos diretamente. - OK

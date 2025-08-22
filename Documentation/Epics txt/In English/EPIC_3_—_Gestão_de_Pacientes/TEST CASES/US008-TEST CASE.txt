@@ -1,0 +1,27 @@
+TEST CASE ( Based On ISO-29119-3 )
+
+ID: 010
+Title: Create New Patient
+Priority: 1
+Traceability: User Story 008
+
+Pre Conditions: To be Logged in
+
+Steps:
+1 - ON Dashboard page, Click on [Prontuários] - Expected: The "Prontuários" page is displayed
+2 - Click on [Novo Paciente] button - Expected: The [New Patient] page is displayed
+3 - Fill all the patient field data - Expected: All the fields gets filled
+4 - Click on [Salvar] button - Expected: A success messa is displayed and the user is redirected to the patients list ( Prontuários ), and the new patient appears on the list
+
+ID: 011
+Title: Cancel Creating New Patient
+Priority: 2
+Traceability: User Story 008
+
+Pre Conditions: To be Logged in
+
+Steps:
+1 - ON Dashboard page, Click on [Prontuários] - Expected: The "Prontuários" page is displayed
+2 - Click on [Novo Paciente] button - Expected: The [New Patient] page is displayed
+3 - Fill all the patient field data - Expected: All the fields gets filled
+4 - Click on [Cancel] button - Expected: The user is redirected to the patients list ( Prontuários ) and the list doesn't change

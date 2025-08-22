@@ -1,0 +1,42 @@
+TEST CASE ( Based On ISO-29119-3 )
+
+ID: 001
+Title: Valid Login as Psychologist
+Priority: 1
+Traceability: User Story 001 
+
+Pre Conditions: To have a User signed in
+
+Steps:
+1 - Go to login Page http://localhost:3000/#/login - Expected: Login Page is displayed with "usuário" and "senha" fields
+2 - Set a valid username - Expected: field usuário get filled with username
+3 - Set a valid Password - Expected: field senha get filled with password
+4 - Click on [Entrar] button - Expected: The user is redirected to the dashboard page  
+
+
+ID: 002
+Title: Invalid Username to Login as Psychologist
+Priority: 2 
+Traceability: User Story 001 
+
+Pre Conditions: To have a User signed in
+
+Steps:
+1 - Go to login Page http://localhost:3000/#/login - Expected: Login Page is displayed with "usuário" and "senha" fields
+2 - Set a invalid username - Expected: field usuário get filled with the invalid username
+3 - Set a valid Password - Expected: field senha get filled with password
+4 - Click on [Entrar] button - Expected: The message [Credenciais Invalidas] is displayed
+
+
+ID: 003
+Title: Invalid password to Login as Psychologist
+Priority: 3
+Traceability: User Story 001 
+
+Pre Conditions: To have a User signed in
+
+Steps:
+1 - Go to login Page http://localhost:3000/#/login - Expected: Login Page is displayed with "usuário" and "senha" fields
+2 - Set a valid username - Expected: field usuário get filled with the username
+3 - Set a invalid Password - Expected: field senha get filled with a invalid password
+4 - Click on [Entrar] button - Expected: The message [Credenciais Invalidas] is displayed

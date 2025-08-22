@@ -1,0 +1,6 @@
+ID: US022
+Title: User Manual
+Description: As a user, I want a manual with usage instructions.
+Acceptance Criteria:
+- The document must include usage instructions.
+- It must be delivered in PDF format.

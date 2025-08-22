@@ -1,0 +1,12 @@
+TEST CASE ( Based On ISO-29119-3 )
+
+ID: 015
+Title: Access Session Notes list
+Priority: 1
+Traceability: User Story 015
+
+Pre Conditions: To be Logged in as a Psychologist
+
+Steps:
+1 - ON Dashboard page, Click on [Prontuários] - Expected: The "Prontuários" page is displayed with a list of patients
+2 - Click on the fisrt Patient of the list - Expected: The the Sessions notes list shows up in Patient Detail page displayed

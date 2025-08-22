@@ -1,0 +1,6 @@
+ID: US021
+Title: API Documentation (Swagger)
+Description: As a developer, I want to access API documentation via Swagger.
+Acceptance Criteria:
+- Swagger must list all endpoints with methods, parameters, and responses.
+- It must be accessible via the `/docs` route.

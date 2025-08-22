@@ -1,0 +1,6 @@
+ID: US020
+Title: Future Features Placeholders
+Description: As a user, I want to see placeholders for upcoming features.
+Acceptance Criteria:
+- "Appointments" and "Financial" buttons must appear disabled.
+- Hovering over them must show a "Coming soon" tooltip.

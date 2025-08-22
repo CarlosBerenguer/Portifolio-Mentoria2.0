@@ -1,0 +1,238 @@
+## **PROMPT FINAL OTIMIZADO + MODELAGEM SQL**
+
+Você é um desenvolvedor sênior especializado em **Node.js, Express, MySQL e desenvolvimento web responsivo com MaterializeCSS**.
+Sua missão é **criar do zero** um sistema web para controle de psicólogos, incluindo **banco de dados MySQL, API backend, frontend completo, autenticação, upload de imagens e documentação**.
+
+---
+
+### **Checklist antes de começar**
+
+1. **Leia todos os requisitos abaixo**.
+2. Liste em um bloco `ITENS A REVISAR` quaisquer dúvidas, lacunas ou pontos conflitantes.
+3. Se tudo estiver claro, siga para a execução.
+
+---
+
+## **1 — Requisitos Técnicos**
+
+* **Backend**: Node.js + Express + MySQL (driver oficial `mysql2`).
+* **Frontend**: HTML5, CSS3, JavaScript puro + MaterializeCSS.
+* **Autenticação**: JWT (JSON Web Token).
+* **Upload de imagens**: multer (armazenar caminho no banco).
+* **Manipulação de datas**: dayjs ou date-fns (para cálculo de idade em anos, meses e dias).
+* **Máscaras**: biblioteca para telefone e CPF (ex.: cleave.js).
+* **Documentação da API**: Swagger.
+* **Banco de dados**: MySQL com chaves primárias, estrangeiras, `UNIQUE` em CPF e CRP, e índices onde necessário.
+
+---
+
+## **2 — Estrutura de Telas e Funcionalidades**
+
+### **2.1 Tela de Login**
+
+* Campos: Usuário, Senha.
+* **Botão “Entrar”**: envia dados para a API, valida credenciais e redireciona para a Dashboard se autenticado.
+* Link "Esqueci minha senha": altera campos para Usuário, CPF, Email.
+
+  * Se dados conferirem com cadastro → trocar campos para Nova Senha e Confirmar Senha, permitindo redefinição.
+* Link "Cadastrar novo usuário": abre Tela de Novo Usuário.
+
+---
+
+### **2.2 Tela de Novo Usuário**
+
+* Campos:
+
+  * Usuário
+  * Senha
+  * Confirmar Senha
+  * Nome Completo
+  * CPF (máscara e `UNIQUE`)
+  * CRP (máscara e `UNIQUE`)
+  * Data de Nascimento
+  * E-mail
+  * Telefone (máscara)
+  * Especialidade
+  * Endereço
+  * Foto (upload)
+* Botão "Salvar": envia para API e retorna mensagem de sucesso ou erro.
+
+---
+
+### **2.3 Dashboard**
+
+* Cabeçalho fixo exibindo: Nome do Psicólogo, CRP, Especialidade.
+* Ícone de perfil (foto) com menu:
+
+  * "Informações do Perfil" (abre dados do usuário)
+  * "Sair" (encerra sessão e retorna ao login).
+
+* Três botões ovais bem grandes grandes:
+
+  * **Prontuário**
+  * **Agendamentos** (Botão desativado com tooltip "Em breve")
+  * **Financeiro** (Botão desativado com tooltip "Em breve")
+
+---
+
+### **2.4 Prontuário**
+
+* Lista de pacientes com: Nome, Idade (anos, meses, dias), Diagnóstico, Demanda, Responsável.
+* Botão "Novo": abre formulário para cadastrar paciente com:
+
+  * Foto
+  * Nome Completo
+  * Data de Nascimento
+  * Email
+  * Telefone
+  * Demanda
+  * Diagnóstico
+  * CPF
+  * Endereço
+  * Nome do Responsável
+* Ao clicar em um paciente → abrir tela de **Informações do Paciente**:
+
+  * Cabeçalho com Nome, Idade, Diagnóstico, Demanda, Responsável.
+  * Tabela de evolução das sessões (ordem decrescente).
+  * Botão "Novo Registro" → abre textarea + botão "Salvar".
+  * Registro salvo aparece no topo, com Data e Hora.
+  * Registros expansíveis/colapsáveis para mostrar ou ocultar conteúdo.
+
+---
+
+## **3 — Banco de Dados MySQL — Modelagem Completa**
+
+A credenciais para acessar o banco de dados:
+user: root
+password: root
+
+```sql
+CREATE DATABASE psicologos_db;
+USE psicologos_db;
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    nome_completo VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
+    crp VARCHAR(20) NOT NULL UNIQUE,
+    data_nascimento DATE NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20),
+    especialidade VARCHAR(100),
+    endereco TEXT,
+    foto VARCHAR(255),
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE pacientes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_completo VARCHAR(100) NOT NULL,
+    data_nascimento DATE NOT NULL,
+    email VARCHAR(100),
+    telefone VARCHAR(20),
+    demanda TEXT,
+    diagnostico TEXT,
+    cpf VARCHAR(14),
+    endereco TEXT,
+    responsavel VARCHAR(100),
+    foto VARCHAR(255),
+    criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE evolucoes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    paciente_id INT NOT NULL,
+    data_hora DATETIME DEFAULT CURRENT_TIMESTAMP,
+    observacao TEXT NOT NULL,
+    FOREIGN KEY (paciente_id) REFERENCES pacientes(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_pacientes_nome ON pacientes(nome_completo);
+CREATE INDEX idx_usuarios_nome ON usuarios(nome_completo);
+```
+
+---
+
+## **4 — Fluxograma das Telas e Rotas**
+
+### **4.1 Fluxo do Usuário (Frontend)**
+
+```
+[Login]
+   ├── (Credenciais corretas) → [Dashboard]
+   │       ├── Botão "Prontuário" → [Lista de Pacientes]
+   │       │       ├── Botão "Novo" → [Cadastro de Paciente]
+   │       │       ├── Clique em paciente → [Detalhes do Paciente]
+   │       │                ├── Botão "Novo Registro" → [Formulário Evolução]
+   │       │                └── Voltar → [Lista de Pacientes]
+   │       ├── Botão "Agendamentos" → [Dashboard - Placeholder]
+   │       ├── Botão "Financeiro" → [Dashboard - Placeholder]
+   │       └── Menu Perfil
+   │              ├── "Informações do Perfil" → [Tela Perfil]
+   │              └── "Sair" → [Login]
+   ├── Link "Esqueci minha senha" → [Recuperação de Senha]
+   │       ├── Preenche dados e confirma → [Nova Senha]
+   │       └── Retorna para [Login]
+   └── Link "Cadastrar novo usuário" → [Cadastro de Usuário]
+```
+
+---
+
+### **4.2 Rotas Backend (API REST)**
+
+**Autenticação**
+
+```
+POST /auth/login → valida usuário e senha, retorna token JWT.
+POST /auth/forgot → recebe usuário, CPF, email e valida.
+POST /auth/reset → recebe nova senha e atualiza no banco.
+```
+
+**Usuários**
+
+```
+POST /usuarios → cadastra novo usuário.
+GET /usuarios/:id → retorna dados do usuário.
+PUT /usuarios/:id → atualiza dados do usuário.
+```
+
+**Pacientes**
+
+```
+POST /pacientes → cadastra novo paciente.
+GET /pacientes → retorna lista de pacientes.
+GET /pacientes/:id → retorna dados detalhados do paciente.
+PUT /pacientes/:id → atualiza dados do paciente.
+DELETE /pacientes/:id → remove paciente e suas evoluções.
+```
+
+**Evoluções**
+
+```
+POST /evolucoes → adiciona evolução de um paciente.
+GET /evolucoes/:paciente_id → lista evoluções de um paciente (ordem desc).
+```
+
+**Uploads**
+
+```
+POST /upload/foto-usuario → salva imagem de perfil.
+POST /upload/foto-paciente → salva imagem do paciente.
+```
+
+---
+
+**5 — Entregáveis**
+O projeto deverá entregar, no mínimo, os seguintes itens:
+
+* **Código-fonte completo** do sistema “PsyControl” desenvolvido em ambiente Web, utilizando as tecnologias definidas (ex.: HTML, CSS, JavaScript/TypeScript, framework front-end e back-end escolhidos).
+* **Protótipo de interface** (wireframes ou mockups) das principais telas, incluindo Tela de Login, Dashboard, Cadastro de Pacientes, Agenda, Relatórios e Configurações.
+* **Fluxograma do sistema** representando o fluxo de navegação e interação entre as telas e funcionalidades.
+* **Documentação técnica** contendo instruções de instalação, configuração e execução do sistema, bem como a estrutura do código e dependências utilizadas.
+* **Design da identidade visual**, incluindo logotipo do “PsyControl” em alta resolução e nas variações necessárias (colorida, monocromática, com e sem fundo).
+* **Banco de dados estruturado**, com script de criação das tabelas, relacionamentos e dados de exemplo para testes.
+* **Manual do usuário** com instruções detalhadas sobre como acessar, navegar e utilizar cada funcionalidade do sistema.
+
+---

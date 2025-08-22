@@ -1,0 +1,7 @@
+ID: US002
+Title: Password Reset
+Description: As a psychologist, I want to reset my password by providing my username, CPF, and email.
+Acceptance Criteria:
+- The form must validate data against the registered information.
+- The new password must be saved and replace the previous one.
+- The user must receive a confirmation message.

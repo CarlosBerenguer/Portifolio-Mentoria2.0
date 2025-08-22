@@ -1,0 +1,7 @@
+ID: US015
+Title: Session Notes Listing
+Description: As a psychologist, I want to view a list of session notes.
+Acceptance Criteria:
+- Notes must appear in descending order.
+- Display date, time, and a summary.
+- Allow expanding/collapsing note text.

@@ -1,0 +1,7 @@
+ID: US013
+Title: Patient Deactivation
+Description: As a psychologist, I want to deactivate a patient’s record.
+Acceptance Criteria:
+- The psychologist can deactivate a patient.
+- Deletion must appears on the patients list as "deactivate"
+- Confirmation must be required before Deactivation.

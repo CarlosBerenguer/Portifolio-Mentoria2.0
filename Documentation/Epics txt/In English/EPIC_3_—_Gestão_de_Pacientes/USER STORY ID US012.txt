@@ -1,0 +1,7 @@
+ID: US012
+Title: Patient Data Update
+Description: As a psychologist, I want to update a patient’s information.
+Acceptance Criteria:
+- The psychologist can edit patient data.
+- CPF must not be duplicated.
+- Updates must be saved correctly.

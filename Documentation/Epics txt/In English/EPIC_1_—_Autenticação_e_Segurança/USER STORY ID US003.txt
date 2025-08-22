@@ -1,0 +1,6 @@
+ID: US003
+Title: Session Logout
+Description: As an authenticated user, I want to log out of the system to prevent unauthorized access.
+Acceptance Criteria:
+- The "Logout" button must terminate the session (invalidate the JWT token).
+- The user must be redirected to the login page.

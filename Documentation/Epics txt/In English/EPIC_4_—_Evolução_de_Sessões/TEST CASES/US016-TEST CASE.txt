@@ -1,0 +1,14 @@
+TEST CASE ( Based On ISO-29119-3 )
+
+ID: 016
+Title: Collapses/Expand the sessions of the List
+Priority: 1
+Traceability: User Story 016
+
+Pre Conditions: To have a Psychologist user created
+
+Steps:
+1 - login as Psychologist - Expected: The user is redirected to the Dashboard
+2 - Click on [Prontuarios] - Expected: The PAciente List is displayed
+3 - On the list of patients, Click on a patient - Expected: The Detail page is displayed
+4 - On the Detail Page, Click on the Toggle - Expected: The register on the list shows and Hides the content of the evolution

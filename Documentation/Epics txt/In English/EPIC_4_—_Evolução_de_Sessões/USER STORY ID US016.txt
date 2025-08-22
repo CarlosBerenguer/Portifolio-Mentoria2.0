@@ -1,0 +1,7 @@
+ID: US016
+Title: Session Note Expansion/Collapse
+Description: As a psychologist, I want to expand or collapse session notes.
+Acceptance Criteria:
+- Notes must start collapsed.
+- Clicking must show the full content.
+- Clicking again must collapse it.
