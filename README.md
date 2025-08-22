@@ -10,21 +10,60 @@ O PsyControl é um sistema web desenvolvido para auxiliar psicólogos no gerenci
 - **Upload de Imagens**: Possibilidade de adicionar fotos de perfil para usuários e pacientes.
 - **API Documentada**: Documentação completa da API com Swagger.
 
-## Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
-### Backend
-- Node.js
-- Express.js
-- MySQL
-- JWT para autenticação
-- Multer para upload de arquivos
-- Swagger para documentação da API
+### 🖥️ Backend
+- ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white) **Node.js** - Runtime JavaScript
+- ![Express.js](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge&logo=express&logoColor=white) **Express.js** - Framework web
+- ![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white) **MySQL** - Banco de dados relacional
+- ![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens) **JWT** - Autenticação e autorização
+- ![Multer](https://img.shields.io/badge/Multer-FF6B6B?style=for-the-badge&logo=node.js&logoColor=white) **Multer** - Upload de arquivos
+- ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black) **Swagger** - Documentação da API
+- ![bcrypt](https://img.shields.io/badge/bcrypt-4A90E2?style=for-the-badge&logo=security&logoColor=white) **bcryptjs** - Criptografia de senhas
+- ![CORS](https://img.shields.io/badge/CORS-FF6B35?style=for-the-badge&logo=cors&logoColor=white) **CORS** - Cross-Origin Resource Sharing
+- ![Day.js](https://img.shields.io/badge/Day.js-FF5F56?style=for-the-badge&logo=javascript&logoColor=white) **Day.js** - Manipulação de datas
+- ![dotenv](https://img.shields.io/badge/dotenv-ECD53F?style=for-the-badge&logo=dotenv&logoColor=black) **dotenv** - Variáveis de ambiente
 
-### Frontend
-- HTML5
-- CSS3
-- JavaScript
-- MaterializeCSS
+### 🎨 Frontend
+- ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) **HTML5** - Estrutura das páginas
+- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) **CSS3** - Estilização
+- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) **JavaScript** - Interatividade
+- ![Materialize](https://img.shields.io/badge/Materialize-EE6E73?style=for-the-badge&logo=material-design&logoColor=white) **MaterializeCSS** - Framework CSS
+- ![Material Icons](https://img.shields.io/badge/Material_Icons-757575?style=for-the-badge&logo=material-design&logoColor=white) **Material Icons** - Ícones da interface
+
+### 🧪 Testes e QA
+
+#### E2E Testing
+- ![Cypress](https://img.shields.io/badge/Cypress-17202C?style=for-the-badge&logo=cypress&logoColor=white) **Cypress** - Testes end-to-end
+- ![Cucumber](https://img.shields.io/badge/Cucumber-23D96C?style=for-the-badge&logo=cucumber&logoColor=white) **Cucumber** - BDD (Behavior Driven Development)
+- ![ESBuild](https://img.shields.io/badge/ESBuild-FFCF00?style=for-the-badge&logo=esbuild&logoColor=black) **ESBuild** - Bundler para preprocessamento
+
+#### API Testing
+- ![Mocha](https://img.shields.io/badge/Mocha-8D6748?style=for-the-badge&logo=mocha&logoColor=white) **Mocha** - Framework de testes
+- ![Chai](https://img.shields.io/badge/Chai-A30701?style=for-the-badge&logo=chai&logoColor=white) **Chai** - Biblioteca de asserções
+- ![Supertest](https://img.shields.io/badge/Supertest-07BA82?style=for-the-badge&logo=testing-library&logoColor=white) **Supertest** - Testes de API HTTP
+- ![Mochawesome](https://img.shields.io/badge/Mochawesome-FF6B6B?style=for-the-badge&logo=mocha&logoColor=white) **Mochawesome** - Relatórios de teste
+
+#### Performance Testing
+- ![K6](https://img.shields.io/badge/K6-7D64FF?style=for-the-badge&logo=k6&logoColor=white) **K6** - Testes de carga e performance
+
+### 🔧 Ferramentas de Desenvolvimento
+- ![Nodemon](https://img.shields.io/badge/Nodemon-76D04B?style=for-the-badge&logo=nodemon&logoColor=white) **Nodemon** - Auto-reload do servidor
+- ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white) **Git** - Controle de versão
+- ![npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white) **npm** - Gerenciador de pacotes
+- ![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=for-the-badge&logo=powershell&logoColor=white) **PowerShell** - Terminal de desenvolvimento
+
+### 📊 Banco de Dados
+- ![MySQL2](https://img.shields.io/badge/MySQL2-4479A1?style=for-the-badge&logo=mysql&logoColor=white) **mysql2** - Driver MySQL para Node.js
+
+### 🔐 Segurança
+- ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white) **jsonwebtoken** - Tokens de autenticação
+- ![bcrypt](https://img.shields.io/badge/bcrypt-4A90E2?style=for-the-badge&logo=security&logoColor=white) **bcryptjs** - Hash de senhas
+
+### 📝 Documentação
+- ![Swagger](https://img.shields.io/badge/Swagger_JSDoc-85EA2D?style=for-the-badge&logo=swagger&logoColor=black) **swagger-jsdoc** - Geração de documentação
+- ![Swagger UI](https://img.shields.io/badge/Swagger_UI-85EA2D?style=for-the-badge&logo=swagger&logoColor=black) **swagger-ui-express** - Interface da documentação
+- ![Markdown](https://img.shields.io/badge/Markdown-000000?style=for-the-badge&logo=markdown&logoColor=white) **Markdown** - Documentação do projeto
 
 ## Instalação e Configuração
 
