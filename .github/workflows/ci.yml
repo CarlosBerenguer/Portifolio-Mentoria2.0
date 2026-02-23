@@ -14,5 +14,3 @@ jobs:
           command: npm run test:e2e
           record: true
           parallel: true
-          group: "End-to-End Tests"
-          wait-on: "http://localhost:3000"
