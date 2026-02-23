@@ -1,15 +1,26 @@
 name: End-to-End Tests
+
 on: push
+
 jobs:
   build:
-    name: Cypress
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # Instala dependências do projeto principal
+      - name: Install backend dependencies
+        run: npm install
+
+      # Sobe o backend em background
+      - name: Start backend
+        run: npm start &
+      
+      # Roda Cypress
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
           working-directory: QA/Cypress
-          start: npm start
           wait-on: http://localhost:3000
