@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const Usuario = require('../models/usuario.model');
 
+const JWT_SECRET = process.env.JWT_SECRET || 'psycontrol_secret_key';
+
 // Controlador para autenticação
 class AuthController {
   // Registrar um novo usuário
@@ -81,8 +83,9 @@ class AuthController {
       const novoUsuario = await Usuario.criar(req.body);
 
       // Gerar token JWT
-      const token = jwt.sign({ id: novoUsuario.id }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_EXPIRES_IN || '24h'
+      const expiresIn = process.env.JWT_EXPIRES_IN || '24h';
+      const token = jwt.sign({ id: novoUsuario.id }, JWT_SECRET, {
+        expiresIn
       });
 
       res.status(201).json({
@@ -182,7 +185,7 @@ class AuthController {
       delete usuarioSemSenha.senha;
 
       // Gerar token JWT
-      const token = jwt.sign({ id: usuarioEncontrado.id }, 'psycontrol_secret_key', {
+      const token = jwt.sign({ id: usuarioEncontrado.id }, JWT_SECRET, {
         expiresIn: '24h'
       });
 
