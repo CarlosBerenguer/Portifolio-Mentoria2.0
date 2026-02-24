@@ -12,16 +12,16 @@ async function seedDatabase() {
       process.exit(0);
     }
     
-    // Criar usuário administrador
-    const senhaHash = await bcrypt.hash('admin123', 10);
+    // Criar usuário padrão para testes (carlos/123)
+    const senhaHash = await bcrypt.hash('123', 10);
     await pool.query(
-      'INSERT INTO usuarios (nome_completo, usuario, email, senha, cpf, telefone, data_nascimento, tipo_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      ['Administrador', 'admin', 'admin@psycontrol.com', senhaHash, '12345678900', '(11) 99999-9999', '1990-01-01', 'admin']
+      'INSERT INTO usuarios (usuario, senha, nome_completo, cpf, crp, data_nascimento, email, telefone, especialidade, endereco, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      ['carlos', senhaHash, 'Carlos Psicólogo', '12345678900', '123456/00', '1990-01-01', 'carlos@example.com', '(11) 99999-9999', null, null, null]
     );
-    console.log('Usuário administrador criado com sucesso!');
+    console.log('Usuário padrão de testes criado com sucesso!');
     
     // Criar alguns pacientes de exemplo
-    const [result] = await pool.query('SELECT id FROM usuarios WHERE usuario = ?', ['admin']);
+    const [result] = await pool.query('SELECT id FROM usuarios WHERE usuario = ?', ['carlos']);
     const usuarioId = result[0].id;
     
     await pool.query(
@@ -47,12 +47,12 @@ async function seedDatabase() {
       const dataOntem = new Date(Date.now() - 86400000).toISOString().split('T')[0];
       
       await pool.query(
-        'INSERT INTO evolucoes (paciente_id, data_evolucao, titulo, descricao) VALUES (?, ?, ?, ?)',
+        'INSERT INTO evolucoes (paciente_id, data_hora, titulo, observacao) VALUES (?, ?, ?, ?)',
         [pacienteId1, dataHoje, 'Primeira consulta', 'Paciente relatou ansiedade e dificuldades para dormir. Iniciamos trabalho de técnicas de respiração e relaxamento.']
       );
       
       await pool.query(
-        'INSERT INTO evolucoes (paciente_id, data_evolucao, titulo, descricao) VALUES (?, ?, ?, ?)',
+        'INSERT INTO evolucoes (paciente_id, data_hora, titulo, observacao) VALUES (?, ?, ?, ?)',
         [pacienteId2, dataOntem, 'Sessão inicial', 'Avaliação inicial do paciente. Histórico familiar de depressão. Definimos plano terapêutico inicial.']
       );
       

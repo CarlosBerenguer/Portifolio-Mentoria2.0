@@ -65,12 +65,12 @@ export default class Utils {
     return `${day}/${month}/${year}`;
 }
 
-// Função para gerar número de telefone aleatório
+// Função para gerar número de telefone aleatório no formato (11) 98765-4321
     generateRandomPhoneNumberElevenNumbers() {
-    const areaCode = Math.floor(Math.random() * (999 - 100 + 1)) + 100;
-    const firstPart = Math.floor(Math.random() * (9999 - 100 + 1)) + 100;
-    const secondPart = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-    return `(${areaCode}) ${firstPart}-${secondPart}`
+    const areaCode = Math.floor(Math.random() * 90) + 10;
+    const firstPart = Math.floor(Math.random() * 90000) + 10000;
+    const secondPart = Math.floor(Math.random() * 9000) + 1000;
+    return `(${areaCode}) ${firstPart}-${secondPart}`;
 }
 
 // Função para gerar endereço aleatório
