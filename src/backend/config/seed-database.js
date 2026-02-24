@@ -47,12 +47,12 @@ async function seedDatabase() {
       const dataOntem = new Date(Date.now() - 86400000).toISOString().split('T')[0];
       
       await pool.query(
-        'INSERT INTO evolucoes (paciente_id, data_evolucao, titulo, descricao) VALUES (?, ?, ?, ?)',
+        'INSERT INTO evolucoes (paciente_id, data_hora, titulo, observacao) VALUES (?, ?, ?, ?)',
         [pacienteId1, dataHoje, 'Primeira consulta', 'Paciente relatou ansiedade e dificuldades para dormir. Iniciamos trabalho de técnicas de respiração e relaxamento.']
       );
       
       await pool.query(
-        'INSERT INTO evolucoes (paciente_id, data_evolucao, titulo, descricao) VALUES (?, ?, ?, ?)',
+        'INSERT INTO evolucoes (paciente_id, data_hora, titulo, observacao) VALUES (?, ?, ?, ?)',
         [pacienteId2, dataOntem, 'Sessão inicial', 'Avaliação inicial do paciente. Histórico familiar de depressão. Definimos plano terapêutico inicial.']
       );
       
