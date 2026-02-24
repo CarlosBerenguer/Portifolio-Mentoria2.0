@@ -67,7 +67,7 @@ export default class Utils {
 
 // Função para gerar número de telefone aleatório
     generateRandomPhoneNumberElevenNumbers() {
-    const areaCode = Math.floor(Math.random() * (999 - 100 + 1)) + 100;
+    const areaCode = 349;
     const firstPart = Math.floor(Math.random() * (9999 - 100 + 1)) + 100;
     const secondPart = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
     return `(${areaCode}) ${firstPart}-${secondPart}`
