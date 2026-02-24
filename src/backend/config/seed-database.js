@@ -15,8 +15,8 @@ async function seedDatabase() {
     // Criar usuário padrão para testes (carlos/123)
     const senhaHash = await bcrypt.hash('123', 10);
     await pool.query(
-      'INSERT INTO usuarios (nome_completo, usuario, email, senha, cpf, telefone, data_nascimento, tipo_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      ['Carlos Psicólogo', 'carlos', 'carlos@example.com', senhaHash, '12345678900', '(11) 99999-9999', '1990-01-01', 'psicologo']
+      'INSERT INTO usuarios (usuario, senha, nome_completo, cpf, crp, data_nascimento, email, telefone, especialidade, endereco, foto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      ['carlos', senhaHash, 'Carlos Psicólogo', '12345678900', '123456/00', '1990-01-01', 'carlos@example.com', '(11) 99999-9999', null, null, null]
     );
     console.log('Usuário padrão de testes criado com sucesso!');
     
