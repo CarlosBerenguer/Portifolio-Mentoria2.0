@@ -3,22 +3,52 @@ name: End-to-End Tests
 on: push
 
 jobs:
-  build:
+  e2e-tests:
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: psicologos_db
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: psicologos_db
+      PORT: 3000
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Instala dependências do projeto principal
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
       - name: Install backend dependencies
         run: npm install
 
-      # Sobe o backend em background
+      - name: Initialize database
+        run: npm run init-db
+
+      - name: Seed database
+        run: npm run seed
+
       - name: Start backend
         run: npm start &
       
-      # Roda Cypress
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:

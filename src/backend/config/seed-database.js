@@ -12,16 +12,16 @@ async function seedDatabase() {
       process.exit(0);
     }
     
-    // Criar usuário administrador
-    const senhaHash = await bcrypt.hash('admin123', 10);
+    // Criar usuário padrão para testes (carlos/123)
+    const senhaHash = await bcrypt.hash('123', 10);
     await pool.query(
       'INSERT INTO usuarios (nome_completo, usuario, email, senha, cpf, telefone, data_nascimento, tipo_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-      ['Administrador', 'admin', 'admin@psycontrol.com', senhaHash, '12345678900', '(11) 99999-9999', '1990-01-01', 'admin']
+      ['Carlos Psicólogo', 'carlos', 'carlos@example.com', senhaHash, '12345678900', '(11) 99999-9999', '1990-01-01', 'psicologo']
     );
-    console.log('Usuário administrador criado com sucesso!');
+    console.log('Usuário padrão de testes criado com sucesso!');
     
     // Criar alguns pacientes de exemplo
-    const [result] = await pool.query('SELECT id FROM usuarios WHERE usuario = ?', ['admin']);
+    const [result] = await pool.query('SELECT id FROM usuarios WHERE usuario = ?', ['carlos']);
     const usuarioId = result[0].id;
     
     await pool.query(
