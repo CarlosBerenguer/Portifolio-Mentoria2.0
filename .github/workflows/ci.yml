@@ -21,6 +21,7 @@ jobs:
           --health-retries=10
 
     env:
+      CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
       DB_HOST: 127.0.0.1
       DB_USER: root
       DB_PASSWORD: root
@@ -54,3 +55,4 @@ jobs:
         with:
           working-directory: QA/Cypress
           wait-on: http://localhost:3000
+          command: npm run test:cloud

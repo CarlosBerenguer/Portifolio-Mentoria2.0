@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "cypress run --e2e --browser electron",
-    "cy:open": "cypress open --e2e --browser electron"
+    "cy:open": "cypress open --e2e --browser electron",
+    "test:cloud": "cypress run --record"
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": "cypress/e2e/support/steps/**/*.cy.js",
