@@ -143,6 +143,25 @@ async function atualizarPerfil() {
       return;
     }
     
+    const dataNascimentoInput = document.getElementById('edit-data-nascimento').value.trim();
+    let dataNascimentoISO = null;
+    if (dataNascimentoInput) {
+      const partesData = dataNascimentoInput.split('/');
+      if (partesData.length !== 3) {
+        M.toast({html: 'Formato de data inválido. Use DD/MM/AAAA.', classes: 'red'});
+        return;
+      }
+      const dia = partesData[0].padStart(2, '0');
+      const mes = partesData[1].padStart(2, '0');
+      const ano = partesData[2];
+      const dataObj = new Date(`${ano}-${mes}-${dia}`);
+      if (isNaN(dataObj.getTime())) {
+        M.toast({html: 'Data de nascimento inválida. Use uma data válida.', classes: 'red'});
+        return;
+      }
+      dataNascimentoISO = `${ano}-${mes}-${dia}`;
+    }
+    
     // Preparar dados para envio (sem foto por enquanto)
     const dados = {
       nome_completo: nomeCompleto,
@@ -152,14 +171,38 @@ async function atualizarPerfil() {
       telefone: document.getElementById('edit-telefone').value.trim(),
       especialidade: document.getElementById('edit-especialidade').value.trim(),
       endereco: document.getElementById('edit-endereco').value.trim(),
-      data_nascimento: document.getElementById('edit-data-nascimento').value
+      data_nascimento: dataNascimentoISO
     };
     
     // Enviar dados para a API
     const response = await apiRequest(`usuarios/${usuarioData.id}`, 'PUT', dados);
+    const usuarioAtualizado = response.usuario || response;
     
-    // Atualizar dados locais
-    usuarioData = { ...usuarioData, ...response };
+    // Atualizar dados locais de texto
+    usuarioData = { ...usuarioData, ...usuarioAtualizado };
+    
+    // Se houver uma nova foto selecionada, fazer upload agora
+    const fotoInput = document.getElementById('foto-input');
+    const file = fotoInput && fotoInput.files[0];
+    if (file) {
+      const formDataFoto = new FormData();
+      formDataFoto.append('foto', file);
+      try {
+        const fotoResponse = await apiRequest('usuarios/foto', 'POST', formDataFoto, 'multipart/form-data');
+        if (fotoResponse && fotoResponse.foto) {
+          usuarioData = { ...usuarioData, foto: fotoResponse.foto };
+          const usuarioLogado = JSON.parse(localStorage.getItem('usuario') || '{}');
+          usuarioLogado.foto = fotoResponse.foto;
+          localStorage.setItem('usuario', JSON.stringify(usuarioLogado));
+          
+          const previewFoto = document.getElementById('preview-foto');
+          if (previewFoto) previewFoto.src = fotoResponse.foto;
+        }
+      } catch (uploadError) {
+        console.error('Erro ao fazer upload da foto do perfil:', uploadError);
+        M.toast({html: 'Perfil salvo, mas houve erro ao atualizar a foto.', classes: 'orange'});
+      }
+    }
     
     // Exibir mensagem de sucesso
     M.toast({html: 'Perfil atualizado com sucesso!', classes: 'green'});
@@ -170,10 +213,10 @@ async function atualizarPerfil() {
     // Atualizar visualização
     preencherDadosVisualizacao();
     
-    // Atualizar dados do usuário no localStorage
+    // Atualizar dados do usuário no localStorage (nome/email)
     const usuarioLogado = JSON.parse(localStorage.getItem('usuario') || '{}');
-    usuarioLogado.nome_completo = response.nome_completo;
-    usuarioLogado.email = response.email;
+    usuarioLogado.nome_completo = usuarioAtualizado.nome_completo;
+    usuarioLogado.email = usuarioAtualizado.email;
     localStorage.setItem('usuario', JSON.stringify(usuarioLogado));
     
   } catch (error) {
@@ -244,15 +287,8 @@ function handleFotoUpload() {
       return;
     }
     
-    // Preview da imagem
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById('preview-foto').src = e.target.result;
-    };
-    reader.readAsDataURL(file);
-    
-    // TODO: Implementar upload da foto para o servidor
-    // Por enquanto, apenas mostra o preview
+    // Neste momento apenas validamos o arquivo.
+    // O upload e a atualização da foto serão feitos ao salvar o perfil.
   }
 }
 
@@ -387,6 +423,37 @@ function initPerfilPage() {
   
   // Event listener para upload de foto
   document.getElementById('foto-input').addEventListener('change', handleFotoUpload);
+  
+  const btnRemoverFoto = document.getElementById('btn-remover-foto');
+  if (btnRemoverFoto) {
+    btnRemoverFoto.addEventListener('click', async function() {
+      if (!usuarioData || !usuarioData.foto) {
+        return;
+      }
+      try {
+        await apiRequest('usuarios/foto', 'DELETE');
+        usuarioData.foto = null;
+        
+        const previewFoto = document.getElementById('preview-foto');
+        if (previewFoto) {
+          previewFoto.src = '/images/user-default.png';
+        }
+        
+        const usuarioLogado = JSON.parse(localStorage.getItem('usuario') || '{}');
+        delete usuarioLogado.foto;
+        localStorage.setItem('usuario', JSON.stringify(usuarioLogado));
+        
+        if (typeof updateSidebar === 'function') {
+          updateSidebar();
+        }
+        
+        M.toast({html: 'Foto removida com sucesso!', classes: 'green'});
+      } catch (error) {
+        console.error('Erro ao remover foto do perfil:', error);
+        M.toast({html: 'Erro ao remover foto do perfil', classes: 'red'});
+      }
+    });
+  }
   
   // Event listeners para logout
   const logoutBtns = document.querySelectorAll('#logout-btn, #logout-btn-sidenav');

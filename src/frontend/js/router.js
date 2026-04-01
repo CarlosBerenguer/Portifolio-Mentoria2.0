@@ -111,32 +111,46 @@ function updateSidebar() {
   
   const userNameElement = document.getElementById('user-name');
   const userEmailElement = document.getElementById('user-email');
-  const userImageElement = document.getElementById('user-image');
+  let userImageElement = document.getElementById('user-image');
   
   if (userNameElement) userNameElement.textContent = usuario.nome_completo || 'Usuário';
   if (userEmailElement) userEmailElement.textContent = usuario.email || '';
-  if (userImageElement) {
-    if (usuario.foto_perfil) {
-      // Se há foto, mostrar a imagem normalmente
-      userImageElement.src = usuario.foto_perfil;
+  const foto = usuario.foto || usuario.foto_perfil;
+
+  if (foto) {
+    // Garantir que o elemento de imagem exista (caso tenha sido removido antes)
+    if (!userImageElement) {
+      const container = document.querySelector('.user-view a[href="#/perfil"]');
+      if (container) {
+        userImageElement = document.createElement('img');
+        userImageElement.id = 'user-image';
+        userImageElement.className = 'circle';
+        container.insertBefore(userImageElement, container.firstChild);
+      }
+    }
+
+    if (userImageElement) {
+      userImageElement.src = foto;
       userImageElement.style.display = 'block';
-      // Remover placeholder se existir
       const placeholder = userImageElement.parentNode.querySelector('.user-photo-placeholder');
       if (placeholder) {
         placeholder.remove();
       }
-    } else {
-      // Se não há foto, esconder a imagem e criar placeholder
-      userImageElement.style.display = 'none';
-      
-      // Verificar se já existe um placeholder
-      let placeholder = userImageElement.parentNode.querySelector('.user-photo-placeholder');
+    }
+  } else if (userImageElement) {
+    // Remover completamente a imagem quando não houver foto cadastrada
+    const container = userImageElement.parentNode;
+    userImageElement.remove();
+
+    // Criar placeholder se ainda não existir
+    if (container) {
+      let placeholder = container.querySelector('.user-photo-placeholder');
       if (!placeholder) {
         placeholder = document.createElement('div');
         placeholder.className = 'user-photo-placeholder circle';
         placeholder.innerHTML = '<div>Foto</div><div>Logo</div>';
         placeholder.setAttribute('data-tooltip', 'Local para mostrar Foto do usuário ou Logo da empresa');
-        userImageElement.parentNode.appendChild(placeholder);
+        container.appendChild(placeholder);
       }
     }
   }

@@ -208,4 +208,24 @@ router.put('/:id/senha', verificarToken, UsuarioController.atualizarSenha);
  */
 router.post('/foto', verificarToken, uploadFotoUsuario, UsuarioController.atualizarFoto);
 
+/**
+ * @swagger
+ * /api/usuarios/foto:
+ *   delete:
+ *     summary: Remove a foto do usuário logado
+ *     tags: [Usuários]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Foto removida (ou inexistente)
+ *       401:
+ *         description: Não autorizado
+ *       404:
+ *         description: Usuário não encontrado
+ *       500:
+ *         description: Erro no servidor
+ */
+router.delete('/foto', verificarToken, UsuarioController.removerFoto);
+
 module.exports = router;

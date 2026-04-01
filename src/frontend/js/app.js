@@ -20,13 +20,35 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Inicializar estado do menu a partir do localStorage
   inicializarEstadoMenu();
+
+  // Permitir fechar toasts ao clicar
+  document.addEventListener('click', function(event) {
+    const toastElem = event.target.closest('.toast');
+    if (toastElem) {
+      const instance = M.Toast.getInstance(toastElem);
+      if (instance) {
+        instance.dismiss();
+      } else {
+        toastElem.remove();
+      }
+    }
+  });
 });
 
 // Função para exibir mensagens de toast
 function showToast(message, classes = 'green') {
   // Substituir quebras de linha por <br> para exibição HTML
   const htmlMessage = message.replace(/\n/g, '<br>');
-  M.toast({html: htmlMessage, classes: `${classes} custom-toast`, displayLength: 6000});
+  const toastInstance = M.toast({
+    html: htmlMessage,
+    classes: `${classes} custom-toast`,
+    displayLength: 6000
+  });
+  if (toastInstance && toastInstance.el) {
+    toastInstance.el.addEventListener('click', function() {
+      toastInstance.dismiss();
+    });
+  }
 }
 
 // Função para exibir erros
@@ -197,9 +219,12 @@ async function apiRequest(endpoint, method = 'GET', data = null, contentType = '
   try {
     const token = localStorage.getItem('token');
     const headers = {
-      'Content-Type': contentType,
       'Accept': 'application/json'
     };
+    
+    if (contentType === 'application/json') {
+      headers['Content-Type'] = 'application/json';
+    }
     
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;

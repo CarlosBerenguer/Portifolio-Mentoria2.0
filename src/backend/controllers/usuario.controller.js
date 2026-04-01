@@ -184,6 +184,39 @@ class UsuarioController {
     }
   }
 
+  // Remover foto do usuário logado
+  static async removerFoto(req, res) {
+    try {
+      const id = req.usuarioId;
+      const usuario = await Usuario.buscarPorId(id);
+
+      if (!usuario) {
+        return res.status(404).json({ mensagem: 'Usuário não encontrado' });
+      }
+
+      if (!usuario.foto) {
+        return res.status(200).json({ mensagem: 'Nenhuma foto cadastrada', foto: null });
+      }
+
+      const caminhoRelativo = usuario.foto.replace(/^\//, '');
+      const caminhoAbsoluto = path.join(__dirname, '..', caminhoRelativo);
+
+      if (fs.existsSync(caminhoAbsoluto)) {
+        fs.unlinkSync(caminhoAbsoluto);
+      }
+
+      await Usuario.atualizar(id, { foto: null });
+
+      res.status(200).json({
+        mensagem: 'Foto removida com sucesso',
+        foto: null
+      });
+    } catch (error) {
+      console.error('Erro ao remover foto:', error);
+      res.status(500).json({ mensagem: 'Erro ao remover foto do usuário' });
+    }
+  }
+
   // Obter estatísticas do usuário
   static async obterEstatisticas(req, res) {
     try {

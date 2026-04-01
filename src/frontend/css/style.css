@@ -192,6 +192,15 @@ main.menu-collapsed {
   justify-content: space-between !important;
 }
 
+.user-view #user-image {
+  width: 128px !important;
+  height: 128px !important;
+  border-radius: 50% !important;
+  display: block !important;
+  margin: 0 auto !important;
+  object-fit: cover !important;
+}
+
 .user-view .background {
   background-color: #26a69a;
 }
@@ -212,6 +221,11 @@ main.menu-collapsed {
   line-height: 1.2 !important;
   text-align: center !important;
   display: block !important;
+}
+
+#btn-remover-foto i.material-icons {
+  font-size: 1.6rem !important;
+  line-height: 32px !important;
 }
 
 /* Cards */

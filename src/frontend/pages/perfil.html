@@ -140,14 +140,23 @@
                 
                 <form id="form-perfil" class="row">
                   <!-- Upload de Foto -->
-                  <div class="col s12 center-align" style="margin-bottom: 20px;">
-                    <div class="file-field input-field">
-                      <div class="btn teal">
-                        <span>Foto</span>
-                        <input type="file" id="foto-input" accept="image/*">
+                  <div class="col s12" style="margin-bottom: 20px;">
+                    <div class="row" style="margin-bottom: 0;">
+                      <div class="col s10 m10">
+                        <div class="file-field input-field">
+                          <div class="btn teal">
+                            <span>Foto</span>
+                            <input type="file" id="foto-input" accept="image/*">
+                          </div>
+                          <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text" placeholder="Selecione uma foto de perfil">
+                          </div>
+                        </div>
                       </div>
-                      <div class="file-path-wrapper">
-                        <input class="file-path validate" type="text" placeholder="Selecione uma foto de perfil">
+                      <div class="col s2 m2 center-align" style="margin-top: 10px;">
+                        <button id="btn-remover-foto" type="button" class="btn-floating btn-small waves-effect waves-light white tooltipped" data-position="bottom" data-tooltip="Remover Foto">
+                          <i class="material-icons red-text">delete_forever</i>
+                        </button>
                       </div>
                     </div>
                   </div>
