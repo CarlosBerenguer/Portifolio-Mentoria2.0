@@ -8,8 +8,10 @@
     "test:cloud": "cypress run --record"
   },
   "cypress-cucumber-preprocessor": {
-    "stepDefinitions": "cypress/e2e/support/steps/**/*.cy.js",
-    "nonGlobalStepDefinitions": false
+    "stepDefinitions": [
+      "cypress/e2e/support/steps/**/*.{js,ts}",
+      "QA/Cypress/cypress/e2e/support/steps/**/*.{js,ts}"
+    ]
   },
   
   "keywords": [],

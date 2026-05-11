@@ -8,6 +8,13 @@ module.exports = defineConfig({
   e2e: {
     baseUrl: "http://localhost:3000",
     specPattern: "cypress/e2e/features/**/*.feature",
+    supportFile: "cypress/e2e/support/e2e.js",
+    env: {
+      stepDefinitions: [
+        "cypress/e2e/support/steps/**/*.{js,ts}",
+        "QA/Cypress/cypress/e2e/support/steps/**/*.{js,ts}",
+      ],
+    },
     async setupNodeEvents(on, config) {
       await addCucumberPreprocessorPlugin(on, config);
       on(
@@ -18,6 +25,6 @@ module.exports = defineConfig({
       );
       return config;
     },
-    supportFile: "cypress/e2e/support/e2e.js",
+    
   },
 });
